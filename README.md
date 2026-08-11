@@ -1,27 +1,11 @@
-# Birthday Website V7
+# Birthday Website — Simple Edition
 
-A cinematic, static birthday time-capsule site.
+Upload all files to GitHub and deploy with Vercel.
 
-## Upload
-Keep this structure:
-- index.html
-- style.css
-- script.js
-- birthday-original-ambience.wav
-- assets/
+## Add real photos
+Replace the six gradient `.ph1`–`.ph6` backgrounds in `style.css` with image URLs or local files.
 
-## Your real photos
-Replace assets/photo-01.svg through photo-12.svg with JPG/PNG files while keeping the same filenames.
+## Add your music
+For a copyrighted song, use a copy you have the right to use. Rename it `birthday-song.mp3`, then change the audio source in `index.html` from `birthday-ambience.wav` to `birthday-song.mp3`.
 
-## Harvey
-The project does **not** contain the copyrighted Harvey recording. The SOUND system looks for `harvey.mp3` locally if you add a copy you are licensed to use. The "OPEN HARVEY" button opens the official Her's audio on YouTube.
-
-Official audio:
-https://www.youtube.com/watch?v=gaA7RAy5rYg
-
-## Deploy
-Vercel:
-- Framework: Other
-- Build command: leave blank
-- Output directory: leave blank
-- Deploy.
+The included WAV is original ambience so the site has a soundtrack immediately.
