@@ -16,81 +16,90 @@ const pages = [
 
 let currentPage = 0;
 let musicOn = false;
+let changingPage = false;
 
 
 /* =====================================================
    LOADER
 ===================================================== */
 
-let loading = 0;
+let progress = 0;
 
 const loader = document.getElementById("loader");
 const loaderNumber = document.getElementById("loaderNumber");
 const loaderBar = document.getElementById("loaderBar");
 
-const loadingTimer = setInterval(() => {
+const loaderTimer = setInterval(() => {
 
-  loading += Math.floor(Math.random() * 10) + 4;
+  progress += Math.floor(Math.random() * 8) + 5;
 
-  if (loading >= 100) {
-    loading = 100;
-    clearInterval(loadingTimer);
+  if (progress >= 100) {
+
+    progress = 100;
+
+    clearInterval(loaderTimer);
 
     setTimeout(() => {
       loader.classList.add("hidden");
-    }, 400);
+    }, 350);
   }
 
   loaderNumber.textContent =
-    String(loading).padStart(2, "0");
+    String(progress).padStart(2, "0");
 
   loaderBar.style.width =
-    `${loading}%`;
+    progress + "%";
 
-}, 80);
+}, 90);
 
 
 /* =====================================================
-   PAGE TRANSITIONS
+   PAGE SYSTEM
 ===================================================== */
 
-function goToPage(number) {
+function showPage(index) {
 
-  if (number < 0 || number >= pages.length) {
+  if (
+    index < 0 ||
+    index >= pages.length ||
+    index === currentPage ||
+    changingPage
+  ) {
     return;
   }
+
+  changingPage = true;
 
   const oldPage = pages[currentPage];
-  const newPage = pages[number];
-
-  if (oldPage === newPage) {
-    return;
-  }
+  const newPage = pages[index];
 
   oldPage.classList.remove("active");
-  oldPage.classList.add("leaving");
-
-  setTimeout(() => {
-    oldPage.classList.remove("leaving");
-  }, 1000);
+  oldPage.classList.add("page-out");
 
   newPage.classList.add("active");
 
-  currentPage = number;
+  currentPage = index;
 
-  window.scrollTo({
-    top: 0,
-    behavior: "instant"
-  });
+  setTimeout(() => {
+
+    oldPage.classList.remove("page-out");
+
+    changingPage = false;
+
+  }, 900);
 }
 
 
 /* =====================================================
-   MUSIC
+   ENTER
 ===================================================== */
 
-async function startMusic() {
+enterButton.addEventListener("click", async (event) => {
 
+  event.preventDefault();
+  event.stopPropagation();
+
+  /* Start music directly from the user's click */
   try {
 
     music.volume = 0.65;
@@ -106,73 +115,65 @@ async function startMusic() {
 
   } catch (error) {
 
-    console.log("Music needs another click.");
+    console.log("Music blocked:", error);
 
     musicText.textContent =
-      "TAP TO PLAY";
+      "TAP ♫ TO PLAY";
 
   }
-}
 
+  /* Move to archive */
+  showPage(1);
 
-function stopMusic() {
-
-  music.pause();
-
-  musicOn = false;
-
-  musicText.textContent =
-    "PLAY HARVEY";
-
-  musicButton.classList.remove(
-    "playing"
-  );
-}
-
-
-async function toggleMusic() {
-
-  if (musicOn) {
-    stopMusic();
-  } else {
-    await startMusic();
-  }
-
-}
-
-
-musicButton.addEventListener(
-  "click",
-  toggleMusic
-);
+});
 
 
 /* =====================================================
-   ENTER EXPERIENCE
+   MUSIC BUTTON
 ===================================================== */
 
-enterButton.addEventListener(
-  "click",
-  async () => {
+musicButton.addEventListener("click", async (event) => {
 
-    /*
-      IMPORTANT:
-      This click is the user's interaction,
-      so the browser allows audio playback here.
-    */
+  event.preventDefault();
+  event.stopPropagation();
 
-    await startMusic();
+  if (musicOn) {
 
-    setTimeout(() => {
-      goToPage(1);
-    }, 350);
+    music.pause();
+
+    musicOn = false;
+
+    musicText.textContent =
+      "PLAY HARVEY";
+
+    musicButton.classList.remove("playing");
+
+  } else {
+
+    try {
+
+      await music.play();
+
+      musicOn = true;
+
+      musicText.textContent =
+        "HARVEY · PLAYING";
+
+      musicButton.classList.add("playing");
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
 
   }
-);
+
+});
 
 
 /* =====================================================
-   CAMERA ROLL DRAG
+   CAMERA ROLL
 ===================================================== */
 
 const cameraWindow =
@@ -182,329 +183,167 @@ const cameraTrack =
   document.getElementById("cameraTrack");
 
 let dragging = false;
-let dragStart = 0;
-let savedPosition = 0;
-let currentPosition = 0;
+let startX = 0;
+let startPosition = 0;
+
+cameraWindow.addEventListener("pointerdown", event => {
+
+  dragging = true;
+
+  startX = event.clientX;
+
+  startPosition =
+    cameraTrack.getBoundingClientRect().left;
+
+  cameraTrack.style.animationPlayState =
+    "paused";
+
+  cameraWindow.setPointerCapture(
+    event.pointerId
+  );
+
+});
 
 
-cameraWindow.addEventListener(
-  "pointerdown",
-  event => {
-
-    dragging = true;
-
-    dragStart = event.clientX;
-
-    cameraWindow.setPointerCapture(
-      event.pointerId
-    );
-
-    cameraTrack.style.animationPlayState =
-      "paused";
-
-  }
-);
-
-
-cameraWindow.addEventListener(
-  "pointermove",
-  event => {
-
-    if (!dragging) return;
-
-    const movement =
-      event.clientX - dragStart;
-
-    currentPosition =
-      savedPosition + movement;
-
-    cameraTrack.style.transform =
-      `translateX(${currentPosition}px)`;
-
-  }
-);
-
-
-function stopDragging() {
+cameraWindow.addEventListener("pointermove", event => {
 
   if (!dragging) return;
 
+  const difference =
+    event.clientX - startX;
+
+  cameraTrack.style.transform =
+    `translateX(${difference}px)`;
+
+});
+
+
+cameraWindow.addEventListener("pointerup", () => {
+
   dragging = false;
 
-  savedPosition =
-    currentPosition;
-
-}
-
-
-cameraWindow.addEventListener(
-  "pointerup",
-  stopDragging
-);
-
-cameraWindow.addEventListener(
-  "pointercancel",
-  stopDragging
-);
+});
 
 
 /* =====================================================
-   SCROLL TO NEXT PAGE
+   WISH BUTTON
 ===================================================== */
 
-let wheelLocked = false;
+let wishStarted = false;
 
-window.addEventListener(
-  "wheel",
-  event => {
+wishButton.addEventListener("click", event => {
 
-    if (wheelLocked) return;
+  event.preventDefault();
 
-    /*
-      Only use the cinematic page navigation
-      when the page itself isn't being dragged.
-    */
+  if (wishStarted) return;
 
-    if (Math.abs(event.deltaY) < 20) {
-      return;
-    }
+  wishStarted = true;
 
-    wheelLocked = true;
+  const heading =
+    document.getElementById("wishHeading");
 
-    if (event.deltaY > 0) {
+  const text =
+    document.getElementById("wishText");
 
-      goToPage(
-        Math.min(
-          currentPage + 1,
-          pages.length - 1
-        )
-      );
+  const flames =
+    document.querySelectorAll(".flames i");
 
-    } else {
+  const numbers = ["3", "2", "1"];
 
-      goToPage(
-        Math.max(
-          currentPage - 1,
-          0
-        )
-      );
+  let i = 0;
 
-    }
-
-    setTimeout(() => {
-      wheelLocked = false;
-    }, 1000);
-
-  },
-  { passive: true }
-);
+  wishButton.style.pointerEvents =
+    "none";
 
 
-/* =====================================================
-   TOUCH SWIPE
-===================================================== */
+  function next() {
 
-let touchStartY = 0;
-
-window.addEventListener(
-  "touchstart",
-  event => {
-
-    touchStartY =
-      event.touches[0].clientY;
-
-  },
-  { passive: true }
-);
-
-
-window.addEventListener(
-  "touchend",
-  event => {
-
-    const touchEndY =
-      event.changedTouches[0].clientY;
-
-    const difference =
-      touchStartY - touchEndY;
-
-    if (Math.abs(difference) < 60) {
-      return;
-    }
-
-    if (difference > 0) {
-
-      goToPage(
-        Math.min(
-          currentPage + 1,
-          pages.length - 1
-        )
-      );
-
-    } else {
-
-      goToPage(
-        Math.max(
-          currentPage - 1,
-          0
-        )
-      );
-
-    }
-
-  },
-  { passive: true }
-);
-
-
-/* =====================================================
-   WISH / CAKE
-===================================================== */
-
-let wishing = false;
-
-wishButton.addEventListener(
-  "click",
-  () => {
-
-    if (wishing) return;
-
-    wishing = true;
-
-    const heading =
-      document.getElementById(
-        "wishHeading"
-      );
-
-    const text =
-      document.getElementById(
-        "wishText"
-      );
-
-    const flames =
-      document.querySelectorAll(
-        ".flames i"
-      );
-
-    const numbers =
-      ["3", "2", "1"];
-
-    let index = 0;
-
-    wishButton.disabled = true;
-
-    function countdown() {
-
-      if (index < numbers.length) {
-
-        heading.textContent =
-          numbers[index];
-
-        text.textContent =
-          index === 0
-            ? "MAKE IT A GOOD ONE."
-            : index === 1
-              ? "ALMOST..."
-              : "BLOW.";
-
-        heading.style.transform =
-          "scale(.7)";
-
-        heading.style.opacity =
-          "0";
-
-        requestAnimationFrame(() => {
-
-          heading.style.transition =
-            "transform .45s ease, opacity .45s ease";
-
-          heading.style.transform =
-            "scale(1)";
-
-          heading.style.opacity =
-            "1";
-
-        });
-
-        index++;
-
-        setTimeout(
-          countdown,
-          900
-        );
-
-        return;
-      }
-
-
-      /* BLOW OUT */
-
-      flames.forEach(flame => {
-
-        flame.style.transition =
-          "opacity .35s, transform .35s";
-
-        flame.style.opacity = "0";
-
-        flame.style.transform =
-          "translateY(-20px) scale(.2)";
-
-      });
-
+    if (i < numbers.length) {
 
       heading.textContent =
-        "♡";
+        numbers[i];
 
       text.textContent =
-        "WISH GRANTED.";
+        i === 0
+          ? "MAKE A WISH."
+          : i === 1
+            ? "ALMOST..."
+            : "BLOW.";
 
+      heading.animate(
+        [
+          {
+            transform: "scale(.4)",
+            opacity: 0
+          },
+          {
+            transform: "scale(1)",
+            opacity: 1
+          }
+        ],
+        {
+          duration: 500,
+          easing: "cubic-bezier(.16,1,.3,1)"
+        }
+      );
 
-      createConfetti();
+      i++;
 
+      setTimeout(next, 850);
 
-      /* FULL SCREEN OLD-STYLE CHANGE */
-
-      setTimeout(() => {
-
-        const wishPage =
-          document.getElementById(
-            "wishPage"
-          );
-
-        wishPage.style.transform =
-          "scale(1.08)";
-
-        wishPage.style.opacity =
-          "0";
-
-        wishPage.style.transition =
-          "transform 1s cubic-bezier(.77,0,.18,1), opacity 1s";
-
-        setTimeout(() => {
-
-          wishPage.style.transform =
-            "";
-
-          wishPage.style.opacity =
-            "";
-
-          goToPage(4);
-
-          wishing = false;
-
-          wishButton.disabled =
-            false;
-
-        }, 850);
-
-      }, 1200);
-
+      return;
     }
 
-    countdown();
+
+    /* Blow candles */
+
+    flames.forEach(flame => {
+
+      flame.animate(
+        [
+          {
+            opacity: 1,
+            transform: "scale(1)"
+          },
+          {
+            opacity: 0,
+            transform:
+              "translateY(-35px) scale(.1)"
+          }
+        ],
+        {
+          duration: 500,
+          fill: "forwards"
+        }
+      );
+
+    });
+
+
+    heading.textContent = "♡";
+    text.textContent = "WISH GRANTED.";
+
+    createConfetti();
+
+
+    /* BIG SCREEN CHANGE */
+
+    setTimeout(() => {
+
+      showPage(4);
+
+      wishStarted = false;
+
+      wishButton.style.pointerEvents =
+        "auto";
+
+    }, 1000);
 
   }
-);
+
+  next();
+
+});
 
 
 /* =====================================================
@@ -514,39 +353,30 @@ wishButton.addEventListener(
 function createConfetti() {
 
   const container =
-    document.getElementById(
-      "confetti"
-    );
+    document.getElementById("confetti");
 
   container.innerHTML = "";
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 120; i++) {
 
     const piece =
-      document.createElement(
-        "span"
-      );
+      document.createElement("span");
 
     piece.className =
       "confetti-piece";
 
     const angle =
       Math.random() *
-      Math.PI *
-      2;
+      Math.PI * 2;
 
     const distance =
-      150 +
-      Math.random() *
-      650;
+      200 + Math.random() * 650;
 
     const x =
-      Math.cos(angle) *
-      distance;
+      Math.cos(angle) * distance;
 
     const y =
-      Math.sin(angle) *
-      distance;
+      Math.sin(angle) * distance;
 
     piece.style.setProperty(
       "--x",
@@ -563,46 +393,48 @@ function createConfetti() {
       `${Math.random() * 1000}deg`
     );
 
-    piece.style.width =
-      `${4 + Math.random() * 6}px`;
-
-    piece.style.height =
-      `${7 + Math.random() * 12}px`;
-
-    container.appendChild(
-      piece
-    );
+    container.appendChild(piece);
 
   }
+
 }
 
 
 /* =====================================================
-   FINALE MUSIC
+   FINAL MUSIC
 ===================================================== */
 
-finalMusicButton.addEventListener(
-  "click",
-  async () => {
+finalMusicButton.addEventListener("click", async () => {
 
-    if (musicOn) {
+  if (musicOn) {
 
-      stopMusic();
+    music.pause();
+
+    musicOn = false;
+
+    finalMusicButton.innerHTML =
+      "♫ <span>PLAY HARVEY AGAIN</span>";
+
+  } else {
+
+    try {
+
+      await music.play();
+
+      musicOn = true;
 
       finalMusicButton.innerHTML =
-        "♫ <span>PLAY HARVEY AGAIN</span>";
+        "♫ <span>HARVEY · PLAYING</span>";
 
-    } else {
+    } catch (error) {
 
-      await startMusic();
-
-      finalMusicButton.innerHTML =
-        "♫ <span>HARVEY IS PLAYING</span>";
+      console.log(error);
 
     }
 
   }
-);
+
+});
 
 
 /* =====================================================
@@ -622,24 +454,21 @@ let ringX = 0;
 let ringY = 0;
 
 
-window.addEventListener(
-  "mousemove",
-  event => {
+window.addEventListener("mousemove", event => {
 
-    mouseX = event.clientX;
-    mouseY = event.clientY;
+  mouseX = event.clientX;
+  mouseY = event.clientY;
 
-    cursor.style.left =
-      `${mouseX}px`;
+  cursor.style.left =
+    mouseX + "px";
 
-    cursor.style.top =
-      `${mouseY}px`;
+  cursor.style.top =
+    mouseY + "px";
 
-  }
-);
+});
 
 
-function cursorAnimation() {
+function cursorLoop() {
 
   ringX +=
     (mouseX - ringX) * .12;
@@ -648,18 +477,16 @@ function cursorAnimation() {
     (mouseY - ringY) * .12;
 
   cursorRing.style.left =
-    `${ringX}px`;
+    ringX + "px";
 
   cursorRing.style.top =
-    `${ringY}px`;
+    ringY + "px";
 
-  requestAnimationFrame(
-    cursorAnimation
-  );
+  requestAnimationFrame(cursorLoop);
 
 }
 
-cursorAnimation();
+cursorLoop();
 
 
 document.querySelectorAll(
@@ -669,18 +496,14 @@ document.querySelectorAll(
   element.addEventListener(
     "mouseenter",
     () => {
-      document.body.classList.add(
-        "hovering"
-      );
+      document.body.classList.add("hovering");
     }
   );
 
   element.addEventListener(
     "mouseleave",
     () => {
-      document.body.classList.remove(
-        "hovering"
-      );
+      document.body.classList.remove("hovering");
     }
   );
 
@@ -688,63 +511,62 @@ document.querySelectorAll(
 
 
 /* =====================================================
-   KEYBOARD
+   KEYBOARD — NO MORE WHEEL FIGHTING
 ===================================================== */
 
-document.addEventListener(
-  "keydown",
-  event => {
+document.addEventListener("keydown", event => {
 
-    if (event.key === "ArrowDown") {
+  if (
+    event.target.tagName === "INPUT" ||
+    event.target.tagName === "TEXTAREA"
+  ) {
+    return;
+  }
 
-      goToPage(
-        Math.min(
-          currentPage + 1,
-          pages.length - 1
-        )
-      );
+  if (event.key === "ArrowDown") {
 
-    }
+    event.preventDefault();
 
-    if (event.key === "ArrowUp") {
-
-      goToPage(
-        Math.max(
-          currentPage - 1,
-          0
-        )
-      );
-
-    }
-
-    if (event.code === "Space") {
-
-      event.preventDefault();
-
-      toggleMusic();
-
-    }
+    showPage(
+      Math.min(
+        currentPage + 1,
+        pages.length - 1
+      )
+    );
 
   }
-);
+
+  if (event.key === "ArrowUp") {
+
+    event.preventDefault();
+
+    showPage(
+      Math.max(
+        currentPage - 1,
+        0
+      )
+    );
+
+  }
+
+});
 
 
 /* =====================================================
-   INITIAL STATE
+   START
 ===================================================== */
 
-pages.forEach(
-  (page, index) => {
+pages.forEach((page, index) => {
 
-    if (index === 0) {
-      page.classList.add("active");
-    } else {
-      page.classList.remove("active");
-    }
+  page.classList.remove(
+    "active",
+    "page-out"
+  );
 
+  if (index === 0) {
+    page.classList.add("active");
   }
-);
 
-console.log(
-  "♡ CHOTU BIRTHDAY EXPERIENCE LOADED"
-);
+});
+
+console.log("♡ BIRTHDAY EXPERIENCE READY");
