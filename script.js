@@ -1,387 +1,750 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+const music = document.getElementById("harveyMusic");
+const musicButton = document.getElementById("musicButton");
+const musicText = document.getElementById("musicText");
 
-  <title>For Chotu ♡</title>
+const enterButton = document.getElementById("enterButton");
+const wishButton = document.getElementById("wishButton");
+const finalMusicButton = document.getElementById("finalMusicButton");
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+const pages = [
+  document.getElementById("introPage"),
+  document.getElementById("archivePage"),
+  document.getElementById("letterPage"),
+  document.getElementById("wishPage"),
+  document.getElementById("finalePage")
+];
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500&family=Parisienne&display=swap" rel="stylesheet">
+let currentPage = 0;
+let musicOn = false;
 
-  <link rel="stylesheet" href="style.css">
-</head>
 
-<body>
+/* =====================================================
+   LOADER
+===================================================== */
 
-  <!-- LOADING SCREEN -->
-  <div id="loader">
-    <div class="loader-content">
-      <div class="loader-edition">LIMITED EDITION</div>
-      <div class="loader-number" id="loaderNumber">00</div>
-      <div class="loader-bar">
-        <span id="loaderBar"></span>
-      </div>
-      <p>something made for chotu</p>
-    </div>
-  </div>
+let loading = 0;
 
+const loader = document.getElementById("loader");
+const loaderNumber = document.getElementById("loaderNumber");
+const loaderBar = document.getElementById("loaderBar");
 
-  <!-- AMBIENT BACKGROUND -->
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
+const loadingTimer = setInterval(() => {
 
-  <div class="diamond">
-    <span>LIMITED</span>
-    <strong>♡</strong>
-    <span>EDITION</span>
-  </div>
+  loading += Math.floor(Math.random() * 10) + 4;
 
-  <div class="grain"></div>
+  if (loading >= 100) {
+    loading = 100;
+    clearInterval(loadingTimer);
 
-  <!-- CURSOR -->
-  <div class="cursor"></div>
-  <div class="cursor-ring"></div>
+    setTimeout(() => {
+      loader.classList.add("hidden");
+    }, 400);
+  }
 
+  loaderNumber.textContent =
+    String(loading).padStart(2, "0");
 
-  <!-- MUSIC -->
-  <audio id="harveyMusic" preload="auto">
-    <source src="harvey.mp3" type="audio/mpeg">
-  </audio>
+  loaderBar.style.width =
+    `${loading}%`;
 
-  <button id="musicButton" class="music-button">
-    <span class="music-symbol">♫</span>
-    <span id="musicText">PLAY HARVEY</span>
-  </button>
+}, 80);
 
 
-  <!-- =========================
-       PAGE 01 — INTRO
-  ========================== -->
+/* =====================================================
+   PAGE TRANSITIONS
+===================================================== */
 
-  <section class="page page-intro active" id="introPage">
+function goToPage(number) {
 
-    <div class="top-info">
-      <span>26 / 08 / 2026</span>
-      <span>HEISTSIXIN PRESENTS</span>
-    </div>
+  if (number < 0 || number >= pages.length) {
+    return;
+  }
 
+  const oldPage = pages[currentPage];
+  const newPage = pages[number];
 
-    <div class="intro-center">
+  if (oldPage === newPage) {
+    return;
+  }
 
-      <div class="tiny-label">
-        A VERY SMALL INTERNET EXPERIENCE
-      </div>
+  oldPage.classList.remove("active");
+  oldPage.classList.add("leaving");
 
-      <h1>
-        Happy
-        <em>Birthday</em>
-        Chotu.
-      </h1>
+  setTimeout(() => {
+    oldPage.classList.remove("leaving");
+  }, 1000);
 
-      <p>
-        I made this instead of buying you something normal.
-        <br>
-        You're welcome.
-      </p>
+  newPage.classList.add("active");
 
-      <button id="enterButton" class="main-button">
-        <span>ENTER</span>
-        <b>↗</b>
-      </button>
+  currentPage = number;
 
-    </div>
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+}
 
 
-    <div class="bottom-info">
+/* =====================================================
+   MUSIC
+===================================================== */
 
-      <div class="scroll-hint">
-        <span>SCROLL</span>
-        <i></i>
-        <span>OR CLICK ENTER</span>
-      </div>
+async function startMusic() {
 
-      <span>01 — 05</span>
+  try {
 
-    </div>
+    music.volume = 0.65;
 
-  </section>
+    await music.play();
 
+    musicOn = true;
 
-  <!-- =========================
-       PAGE 02 — ARCHIVE
-  ========================== -->
+    musicText.textContent =
+      "HARVEY · PLAYING";
 
-  <section class="page archive-page" id="archivePage">
+    musicButton.classList.add("playing");
 
-    <div class="page-header">
-      <div>
-        <small>02</small>
-        <span>THE CAMERA ROLL</span>
-      </div>
+  } catch (error) {
 
-      <p>
-        then → now
-      </p>
-    </div>
+    console.log("Music needs another click.");
 
+    musicText.textContent =
+      "TAP TO PLAY";
 
-    <div class="archive-heading">
-      <span>years of</span>
-      <strong>chotu.</strong>
-    </div>
+  }
+}
 
 
-    <div class="camera-window">
+function stopMusic() {
 
-      <div class="camera-track" id="cameraTrack">
+  music.pause();
 
-        <div class="photo-card">
-          <span class="year">2010</span>
-          <img src="assets/photo-01.jpg" alt="2010">
-          <small>tiny chotu.</small>
-        </div>
+  musicOn = false;
 
-        <div class="photo-card">
-          <span class="year">2012</span>
-          <img src="assets/photo-02.jpg" alt="2012">
-          <small>already iconic.</small>
-        </div>
+  musicText.textContent =
+    "PLAY HARVEY";
 
-        <div class="photo-card">
-          <span class="year">2014</span>
-          <img src="assets/photo-03.jpg" alt="2014">
-          <small>the lore begins.</small>
-        </div>
+  musicButton.classList.remove(
+    "playing"
+  );
+}
 
-        <div class="photo-card">
-          <span class="year">2016</span>
-          <img src="assets/photo-04.jpg" alt="2016">
-          <small>character development.</small>
-        </div>
 
-        <div class="photo-card">
-          <span class="year">2018</span>
-          <img src="assets/photo-05.jpg" alt="2018">
-          <small>still goated.</small>
-        </div>
-
-        <div class="photo-card">
-          <span class="year">2020</span>
-          <img src="assets/photo-06.jpg" alt="2020">
-          <small>somehow survived.</small>
-        </div>
+async function toggleMusic() {
 
-        <div class="photo-card">
-          <span class="year">2022</span>
-          <img src="assets/photo-07.jpg" alt="2022">
-          <small>look at you.</small>
-        </div>
+  if (musicOn) {
+    stopMusic();
+  } else {
+    await startMusic();
+  }
 
-        <div class="photo-card">
-          <span class="year">2024</span>
-          <img src="assets/photo-08.jpg" alt="2024">
-          <small>almost there.</small>
-        </div>
+}
 
-        <div class="photo-card">
-          <span class="year">2026</span>
-          <img src="assets/photo-09.jpg" alt="2026">
-          <small>my favourite.</small>
-        </div>
 
-      </div>
+musicButton.addEventListener(
+  "click",
+  toggleMusic
+);
 
-    </div>
 
+/* =====================================================
+   ENTER EXPERIENCE
+===================================================== */
 
-    <div class="archive-footer">
-      <span>DRAG TO EXPLORE</span>
-      <div></div>
-      <span>09 MEMORIES</span>
-    </div>
+enterButton.addEventListener(
+  "click",
+  async () => {
 
-  </section>
+    /*
+      IMPORTANT:
+      This click is the user's interaction,
+      so the browser allows audio playback here.
+    */
 
+    await startMusic();
 
-  <!-- =========================
-       PAGE 03 — LETTER
-  ========================== -->
+    setTimeout(() => {
+      goToPage(1);
+    }, 350);
 
-  <section class="page letter-page" id="letterPage">
+  }
+);
 
-    <div class="letter-paper">
 
-      <div class="letter-top">
-        <span>03 / LETTER</span>
-        <span>FOR CHOTU</span>
-      </div>
+/* =====================================================
+   CAMERA ROLL DRAG
+===================================================== */
 
-      <div class="letter-date">
-        AUGUST 26 · 2026
-      </div>
+const cameraWindow =
+  document.querySelector(".camera-window");
 
-      <h2>
-        Dear
-        <em>Chotu,</em>
-      </h2>
+const cameraTrack =
+  document.getElementById("cameraTrack");
 
-      <div class="letter-text">
+let dragging = false;
+let dragStart = 0;
+let savedPosition = 0;
+let currentPosition = 0;
 
-        <p>
-          Happiest Birthday, Chotu ♡
-        </p>
 
-        <p>
-          First of all, thanks for clicking this link and
-          willingly giving me access to your data.
-          Very brave. Questionable decision. I respect it.
-        </p>
+cameraWindow.addEventListener(
+  "pointerdown",
+  event => {
 
-        <p>
-          But genuinely, I'm so grateful to have you.
-          You're one of those people who somehow makes
-          everything more chaotic, funnier and better.
-        </p>
+    dragging = true;
 
-        <p>
-          So please don't kys, don't turn into a cat,
-          and don't forget that you're already blessed
-          to have greatness like me around.
-        </p>
+    dragStart = event.clientX;
 
-        <p>
-          I hope this year gives you everything you
-          secretly wish for, ridiculous amounts of happiness,
-          and memories you'll still laugh about years later.
-        </p>
+    cameraWindow.setPointerCapture(
+      event.pointerId
+    );
 
-        <p>
-          Stay weird.
-          Stay goated.
-          Don't develop too much character.
-        </p>
+    cameraTrack.style.animationPlayState =
+      "paused";
 
-        <p class="love">
-          I love you.
-        </p>
+  }
+);
 
-        <p>
-          Happiest birthday, twin.
-          Now enjoy your day.
-        </p>
 
-      </div>
+cameraWindow.addEventListener(
+  "pointermove",
+  event => {
 
-      <div class="signature">
-        — your favourite person, obviously.
-      </div>
+    if (!dragging) return;
 
-      <div class="stamp">♡</div>
+    const movement =
+      event.clientX - dragStart;
 
-    </div>
+    currentPosition =
+      savedPosition + movement;
 
-  </section>
+    cameraTrack.style.transform =
+      `translateX(${currentPosition}px)`;
 
+  }
+);
 
-  <!-- =========================
-       PAGE 04 — WISH
-  ========================== -->
 
-  <section class="page wish-page" id="wishPage">
+function stopDragging() {
 
-    <div class="wish-number">
-      04 / 05
-    </div>
+  if (!dragging) return;
 
-    <div class="bunny">
-      <div class="ear ear-left"></div>
-      <div class="ear ear-right"></div>
+  dragging = false;
 
-      <div class="bunny-head">
-        <span class="bunny-eye eye-left"></span>
-        <span class="bunny-eye eye-right"></span>
-        <span class="bunny-nose">♡</span>
-      </div>
-    </div>
+  savedPosition =
+    currentPosition;
 
-    <p class="wish-label">
-      CHOTU HAS BEEN SUMMONED
-    </p>
+}
 
-    <h2 id="wishHeading">
-      Make a wish.
-    </h2>
 
-    <p id="wishText">
-      You have exactly three seconds.
-    </p>
+cameraWindow.addEventListener(
+  "pointerup",
+  stopDragging
+);
 
-    <div class="cake">
+cameraWindow.addEventListener(
+  "pointercancel",
+  stopDragging
+);
 
-      <div class="flames">
-        <i></i>
-        <i></i>
-        <i></i>
-      </div>
 
-      <div class="candles">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+/* =====================================================
+   SCROLL TO NEXT PAGE
+===================================================== */
 
-      <div class="cake-cream"></div>
-      <div class="cake-body"></div>
+let wheelLocked = false;
 
-    </div>
+window.addEventListener(
+  "wheel",
+  event => {
 
-    <button id="wishButton" class="main-button">
-      BLOW THE CANDLES
-    </button>
+    if (wheelLocked) return;
 
-  </section>
+    /*
+      Only use the cinematic page navigation
+      when the page itself isn't being dragged.
+    */
 
+    if (Math.abs(event.deltaY) < 20) {
+      return;
+    }
 
-  <!-- =========================
-       PAGE 05 — FINALE
-  ========================== -->
+    wheelLocked = true;
 
-  <section class="page finale-page" id="finalePage">
+    if (event.deltaY > 0) {
 
-    <div id="confetti"></div>
+      goToPage(
+        Math.min(
+          currentPage + 1,
+          pages.length - 1
+        )
+      );
 
-    <div class="finale-inner">
+    } else {
 
-      <span>
-        05 / THE END
-      </span>
+      goToPage(
+        Math.max(
+          currentPage - 1,
+          0
+        )
+      );
 
-      <h2>
-        Happiest Birthday
-        <em>Weirdo.</em>
-      </h2>
+    }
 
-      <p>
-        Stay goated, twin. ♡
-      </p>
+    setTimeout(() => {
+      wheelLocked = false;
+    }, 1000);
 
-      <button id="finalMusicButton">
-        ♫ <span>PLAY HARVEY AGAIN</span>
-      </button>
+  },
+  { passive: true }
+);
 
-    </div>
 
-    <div class="final-bottom">
-      made with entirely unnecessary effort.
-    </div>
+/* =====================================================
+   TOUCH SWIPE
+===================================================== */
 
-  </section>
+let touchStartY = 0;
 
+window.addEventListener(
+  "touchstart",
+  event => {
 
-  <script src="script.js"></script>
+    touchStartY =
+      event.touches[0].clientY;
 
-</body>
-</html>
+  },
+  { passive: true }
+);
+
+
+window.addEventListener(
+  "touchend",
+  event => {
+
+    const touchEndY =
+      event.changedTouches[0].clientY;
+
+    const difference =
+      touchStartY - touchEndY;
+
+    if (Math.abs(difference) < 60) {
+      return;
+    }
+
+    if (difference > 0) {
+
+      goToPage(
+        Math.min(
+          currentPage + 1,
+          pages.length - 1
+        )
+      );
+
+    } else {
+
+      goToPage(
+        Math.max(
+          currentPage - 1,
+          0
+        )
+      );
+
+    }
+
+  },
+  { passive: true }
+);
+
+
+/* =====================================================
+   WISH / CAKE
+===================================================== */
+
+let wishing = false;
+
+wishButton.addEventListener(
+  "click",
+  () => {
+
+    if (wishing) return;
+
+    wishing = true;
+
+    const heading =
+      document.getElementById(
+        "wishHeading"
+      );
+
+    const text =
+      document.getElementById(
+        "wishText"
+      );
+
+    const flames =
+      document.querySelectorAll(
+        ".flames i"
+      );
+
+    const numbers =
+      ["3", "2", "1"];
+
+    let index = 0;
+
+    wishButton.disabled = true;
+
+    function countdown() {
+
+      if (index < numbers.length) {
+
+        heading.textContent =
+          numbers[index];
+
+        text.textContent =
+          index === 0
+            ? "MAKE IT A GOOD ONE."
+            : index === 1
+              ? "ALMOST..."
+              : "BLOW.";
+
+        heading.style.transform =
+          "scale(.7)";
+
+        heading.style.opacity =
+          "0";
+
+        requestAnimationFrame(() => {
+
+          heading.style.transition =
+            "transform .45s ease, opacity .45s ease";
+
+          heading.style.transform =
+            "scale(1)";
+
+          heading.style.opacity =
+            "1";
+
+        });
+
+        index++;
+
+        setTimeout(
+          countdown,
+          900
+        );
+
+        return;
+      }
+
+
+      /* BLOW OUT */
+
+      flames.forEach(flame => {
+
+        flame.style.transition =
+          "opacity .35s, transform .35s";
+
+        flame.style.opacity = "0";
+
+        flame.style.transform =
+          "translateY(-20px) scale(.2)";
+
+      });
+
+
+      heading.textContent =
+        "♡";
+
+      text.textContent =
+        "WISH GRANTED.";
+
+
+      createConfetti();
+
+
+      /* FULL SCREEN OLD-STYLE CHANGE */
+
+      setTimeout(() => {
+
+        const wishPage =
+          document.getElementById(
+            "wishPage"
+          );
+
+        wishPage.style.transform =
+          "scale(1.08)";
+
+        wishPage.style.opacity =
+          "0";
+
+        wishPage.style.transition =
+          "transform 1s cubic-bezier(.77,0,.18,1), opacity 1s";
+
+        setTimeout(() => {
+
+          wishPage.style.transform =
+            "";
+
+          wishPage.style.opacity =
+            "";
+
+          goToPage(4);
+
+          wishing = false;
+
+          wishButton.disabled =
+            false;
+
+        }, 850);
+
+      }, 1200);
+
+    }
+
+    countdown();
+
+  }
+);
+
+
+/* =====================================================
+   CONFETTI
+===================================================== */
+
+function createConfetti() {
+
+  const container =
+    document.getElementById(
+      "confetti"
+    );
+
+  container.innerHTML = "";
+
+  for (let i = 0; i < 100; i++) {
+
+    const piece =
+      document.createElement(
+        "span"
+      );
+
+    piece.className =
+      "confetti-piece";
+
+    const angle =
+      Math.random() *
+      Math.PI *
+      2;
+
+    const distance =
+      150 +
+      Math.random() *
+      650;
+
+    const x =
+      Math.cos(angle) *
+      distance;
+
+    const y =
+      Math.sin(angle) *
+      distance;
+
+    piece.style.setProperty(
+      "--x",
+      `${x}px`
+    );
+
+    piece.style.setProperty(
+      "--y",
+      `${y}px`
+    );
+
+    piece.style.setProperty(
+      "--r",
+      `${Math.random() * 1000}deg`
+    );
+
+    piece.style.width =
+      `${4 + Math.random() * 6}px`;
+
+    piece.style.height =
+      `${7 + Math.random() * 12}px`;
+
+    container.appendChild(
+      piece
+    );
+
+  }
+}
+
+
+/* =====================================================
+   FINALE MUSIC
+===================================================== */
+
+finalMusicButton.addEventListener(
+  "click",
+  async () => {
+
+    if (musicOn) {
+
+      stopMusic();
+
+      finalMusicButton.innerHTML =
+        "♫ <span>PLAY HARVEY AGAIN</span>";
+
+    } else {
+
+      await startMusic();
+
+      finalMusicButton.innerHTML =
+        "♫ <span>HARVEY IS PLAYING</span>";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CURSOR
+===================================================== */
+
+const cursor =
+  document.querySelector(".cursor");
+
+const cursorRing =
+  document.querySelector(".cursor-ring");
+
+let mouseX = 0;
+let mouseY = 0;
+
+let ringX = 0;
+let ringY = 0;
+
+
+window.addEventListener(
+  "mousemove",
+  event => {
+
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+
+    cursor.style.left =
+      `${mouseX}px`;
+
+    cursor.style.top =
+      `${mouseY}px`;
+
+  }
+);
+
+
+function cursorAnimation() {
+
+  ringX +=
+    (mouseX - ringX) * .12;
+
+  ringY +=
+    (mouseY - ringY) * .12;
+
+  cursorRing.style.left =
+    `${ringX}px`;
+
+  cursorRing.style.top =
+    `${ringY}px`;
+
+  requestAnimationFrame(
+    cursorAnimation
+  );
+
+}
+
+cursorAnimation();
+
+
+document.querySelectorAll(
+  "button, .photo-card"
+).forEach(element => {
+
+  element.addEventListener(
+    "mouseenter",
+    () => {
+      document.body.classList.add(
+        "hovering"
+      );
+    }
+  );
+
+  element.addEventListener(
+    "mouseleave",
+    () => {
+      document.body.classList.remove(
+        "hovering"
+      );
+    }
+  );
+
+});
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "ArrowDown") {
+
+      goToPage(
+        Math.min(
+          currentPage + 1,
+          pages.length - 1
+        )
+      );
+
+    }
+
+    if (event.key === "ArrowUp") {
+
+      goToPage(
+        Math.max(
+          currentPage - 1,
+          0
+        )
+      );
+
+    }
+
+    if (event.code === "Space") {
+
+      event.preventDefault();
+
+      toggleMusic();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   INITIAL STATE
+===================================================== */
+
+pages.forEach(
+  (page, index) => {
+
+    if (index === 0) {
+      page.classList.add("active");
+    } else {
+      page.classList.remove("active");
+    }
+
+  }
+);
+
+console.log(
+  "♡ CHOTU BIRTHDAY EXPERIENCE LOADED"
+);
