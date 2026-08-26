@@ -1,820 +1,387 @@
-/* =========================================================
-   BIRTHDAY WEBSITE — INTERACTION ENGINE
-========================================================= */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const music = document.getElementById("music");
-const musicButton = document.getElementById("musicButton");
-const musicStatus = document.querySelector(".music-status");
-const openButton = document.getElementById("openButton");
+  <title>For Chotu ♡</title>
 
-let musicPlaying = false;
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500&family=Parisienne&display=swap" rel="stylesheet">
 
-/* =========================================================
-   LOADER
-========================================================= */
+  <link rel="stylesheet" href="style.css">
+</head>
 
-let load = 0;
+<body>
 
-const loadNumber = document.getElementById("loadNumber");
-const loadBar = document.querySelector(".loader-line span");
+  <!-- LOADING SCREEN -->
+  <div id="loader">
+    <div class="loader-content">
+      <div class="loader-edition">LIMITED EDITION</div>
+      <div class="loader-number" id="loaderNumber">00</div>
+      <div class="loader-bar">
+        <span id="loaderBar"></span>
+      </div>
+      <p>something made for chotu</p>
+    </div>
+  </div>
 
-const loaderInterval = setInterval(() => {
 
-  load += Math.floor(Math.random() * 8) + 3;
+  <!-- AMBIENT BACKGROUND -->
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
 
-  if (load >= 100) {
-    load = 100;
-    clearInterval(loaderInterval);
+  <div class="diamond">
+    <span>LIMITED</span>
+    <strong>♡</strong>
+    <span>EDITION</span>
+  </div>
 
-    setTimeout(() => {
+  <div class="grain"></div>
 
-      document.body.classList.add("loaded");
+  <!-- CURSOR -->
+  <div class="cursor"></div>
+  <div class="cursor-ring"></div>
 
-      document.getElementById("loader").classList.add("hide");
 
-    }, 350);
-  }
+  <!-- MUSIC -->
+  <audio id="harveyMusic" preload="auto">
+    <source src="harvey.mp3" type="audio/mpeg">
+  </audio>
 
-  loadNumber.textContent = String(load).padStart(2, "0");
-  loadBar.style.width = `${load}%`;
+  <button id="musicButton" class="music-button">
+    <span class="music-symbol">♫</span>
+    <span id="musicText">PLAY HARVEY</span>
+  </button>
 
-}, 80);
 
+  <!-- =========================
+       PAGE 01 — INTRO
+  ========================== -->
 
-/* =========================================================
-   CURSOR
-========================================================= */
+  <section class="page page-intro active" id="introPage">
 
-const cursor = document.querySelector(".cursor");
-const trail = document.querySelector(".cursor-trail");
+    <div class="top-info">
+      <span>26 / 08 / 2026</span>
+      <span>HEISTSIXIN PRESENTS</span>
+    </div>
 
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
 
-let trailX = mouseX;
-let trailY = mouseY;
+    <div class="intro-center">
 
-window.addEventListener("mousemove", e => {
+      <div class="tiny-label">
+        A VERY SMALL INTERNET EXPERIENCE
+      </div>
 
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+      <h1>
+        Happy
+        <em>Birthday</em>
+        Chotu.
+      </h1>
 
-  cursor.style.left = `${mouseX}px`;
-  cursor.style.top = `${mouseY}px`;
+      <p>
+        I made this instead of buying you something normal.
+        <br>
+        You're welcome.
+      </p>
 
-});
+      <button id="enterButton" class="main-button">
+        <span>ENTER</span>
+        <b>↗</b>
+      </button>
 
-function animateCursor() {
+    </div>
 
-  trailX += (mouseX - trailX) * 0.12;
-  trailY += (mouseY - trailY) * 0.12;
 
-  trail.style.left = `${trailX}px`;
-  trail.style.top = `${trailY}px`;
+    <div class="bottom-info">
 
-  requestAnimationFrame(animateCursor);
-}
+      <div class="scroll-hint">
+        <span>SCROLL</span>
+        <i></i>
+        <span>OR CLICK ENTER</span>
+      </div>
 
-animateCursor();
+      <span>01 — 05</span>
 
+    </div>
 
-document.querySelectorAll(
-  "button, a, .memory-card, .magnetic"
-).forEach(element => {
+  </section>
 
-  element.addEventListener("mouseenter", () => {
-    document.body.classList.add("cursor-hover");
-  });
 
-  element.addEventListener("mouseleave", () => {
-    document.body.classList.remove("cursor-hover");
-  });
+  <!-- =========================
+       PAGE 02 — ARCHIVE
+  ========================== -->
 
-});
+  <section class="page archive-page" id="archivePage">
 
+    <div class="page-header">
+      <div>
+        <small>02</small>
+        <span>THE CAMERA ROLL</span>
+      </div>
 
-/* =========================================================
-   MUSIC
-========================================================= */
+      <p>
+        then → now
+      </p>
+    </div>
 
-async function toggleMusic() {
 
-  try {
+    <div class="archive-heading">
+      <span>years of</span>
+      <strong>chotu.</strong>
+    </div>
 
-    if (!musicPlaying) {
 
-      await music.play();
+    <div class="camera-window">
 
-      musicPlaying = true;
+      <div class="camera-track" id="cameraTrack">
 
-      musicStatus.textContent = "SOUND ON";
+        <div class="photo-card">
+          <span class="year">2010</span>
+          <img src="assets/photo-01.jpg" alt="2010">
+          <small>tiny chotu.</small>
+        </div>
 
-      musicButton.classList.add("playing");
+        <div class="photo-card">
+          <span class="year">2012</span>
+          <img src="assets/photo-02.jpg" alt="2012">
+          <small>already iconic.</small>
+        </div>
 
-    } else {
+        <div class="photo-card">
+          <span class="year">2014</span>
+          <img src="assets/photo-03.jpg" alt="2014">
+          <small>the lore begins.</small>
+        </div>
 
-      music.pause();
+        <div class="photo-card">
+          <span class="year">2016</span>
+          <img src="assets/photo-04.jpg" alt="2016">
+          <small>character development.</small>
+        </div>
 
-      musicPlaying = false;
+        <div class="photo-card">
+          <span class="year">2018</span>
+          <img src="assets/photo-05.jpg" alt="2018">
+          <small>still goated.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2020</span>
+          <img src="assets/photo-06.jpg" alt="2020">
+          <small>somehow survived.</small>
+        </div>
 
-      musicStatus.textContent = "SOUND OFF";
+        <div class="photo-card">
+          <span class="year">2022</span>
+          <img src="assets/photo-07.jpg" alt="2022">
+          <small>look at you.</small>
+        </div>
 
-      musicButton.classList.remove("playing");
+        <div class="photo-card">
+          <span class="year">2024</span>
+          <img src="assets/photo-08.jpg" alt="2024">
+          <small>almost there.</small>
+        </div>
 
-    }
+        <div class="photo-card">
+          <span class="year">2026</span>
+          <img src="assets/photo-09.jpg" alt="2026">
+          <small>my favourite.</small>
+        </div>
 
-  } catch (error) {
+      </div>
 
-    console.log(
-      "Music could not start:",
-      error
-    );
+    </div>
 
-    musicStatus.textContent = "TAP AGAIN";
 
-  }
+    <div class="archive-footer">
+      <span>DRAG TO EXPLORE</span>
+      <div></div>
+      <span>09 MEMORIES</span>
+    </div>
 
-}
+  </section>
 
 
-musicButton.addEventListener(
-  "click",
-  toggleMusic
-);
+  <!-- =========================
+       PAGE 03 — LETTER
+  ========================== -->
 
+  <section class="page letter-page" id="letterPage">
 
-/* =========================================================
-   HERO ENTER BUTTON
-========================================================= */
+    <div class="letter-paper">
 
-openButton.addEventListener("click", () => {
+      <div class="letter-top">
+        <span>03 / LETTER</span>
+        <span>FOR CHOTU</span>
+      </div>
 
-  document.querySelector(".intro-section")
-    .scrollIntoView({
-      behavior: "smooth"
-    });
+      <div class="letter-date">
+        AUGUST 26 · 2026
+      </div>
 
-  if (!musicPlaying) {
-    toggleMusic();
-  }
+      <h2>
+        Dear
+        <em>Chotu,</em>
+      </h2>
 
-});
+      <div class="letter-text">
 
+        <p>
+          Happiest Birthday, Chotu ♡
+        </p>
 
-/* =========================================================
-   FINAL MUSIC BUTTON
-========================================================= */
+        <p>
+          First of all, thanks for clicking this link and
+          willingly giving me access to your data.
+          Very brave. Questionable decision. I respect it.
+        </p>
 
-const finalMusic =
-  document.getElementById("finalMusic");
+        <p>
+          But genuinely, I'm so grateful to have you.
+          You're one of those people who somehow makes
+          everything more chaotic, funnier and better.
+        </p>
 
-finalMusic.addEventListener("click", () => {
+        <p>
+          So please don't kys, don't turn into a cat,
+          and don't forget that you're already blessed
+          to have greatness like me around.
+        </p>
 
-  if (!musicPlaying) {
+        <p>
+          I hope this year gives you everything you
+          secretly wish for, ridiculous amounts of happiness,
+          and memories you'll still laugh about years later.
+        </p>
 
-    music.play();
+        <p>
+          Stay weird.
+          Stay goated.
+          Don't develop too much character.
+        </p>
 
-    musicPlaying = true;
+        <p class="love">
+          I love you.
+        </p>
 
-    musicStatus.textContent = "SOUND ON";
+        <p>
+          Happiest birthday, twin.
+          Now enjoy your day.
+        </p>
 
-  } else {
+      </div>
 
-    music.pause();
+      <div class="signature">
+        — your favourite person, obviously.
+      </div>
 
-    musicPlaying = false;
+      <div class="stamp">♡</div>
 
-    musicStatus.textContent = "SOUND OFF";
+    </div>
 
-  }
+  </section>
 
-});
 
+  <!-- =========================
+       PAGE 04 — WISH
+  ========================== -->
 
-/* =========================================================
-   MAGNETIC BUTTONS
-========================================================= */
+  <section class="page wish-page" id="wishPage">
 
-document.querySelectorAll(".magnetic").forEach(button => {
+    <div class="wish-number">
+      04 / 05
+    </div>
 
-  button.addEventListener("mousemove", e => {
+    <div class="bunny">
+      <div class="ear ear-left"></div>
+      <div class="ear ear-right"></div>
 
-    const rect =
-      button.getBoundingClientRect();
+      <div class="bunny-head">
+        <span class="bunny-eye eye-left"></span>
+        <span class="bunny-eye eye-right"></span>
+        <span class="bunny-nose">♡</span>
+      </div>
+    </div>
 
-    const x =
-      e.clientX -
-      rect.left -
-      rect.width / 2;
+    <p class="wish-label">
+      CHOTU HAS BEEN SUMMONED
+    </p>
 
-    const y =
-      e.clientY -
-      rect.top -
-      rect.height / 2;
+    <h2 id="wishHeading">
+      Make a wish.
+    </h2>
 
-    button.style.transform =
-      `translate(${x * 0.18}px, ${y * 0.18}px)`;
+    <p id="wishText">
+      You have exactly three seconds.
+    </p>
 
-  });
+    <div class="cake">
 
-  button.addEventListener("mouseleave", () => {
+      <div class="flames">
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
 
-    button.style.transform =
-      "translate(0, 0)";
+      <div class="candles">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-  });
+      <div class="cake-cream"></div>
+      <div class="cake-body"></div>
 
-});
+    </div>
 
+    <button id="wishButton" class="main-button">
+      BLOW THE CANDLES
+    </button>
 
-/* =========================================================
-   CAMERA ROLL — DRAG
-========================================================= */
+  </section>
 
-const cameraWrap =
-  document.querySelector(".camera-wrap");
 
-const cameraTrack =
-  document.getElementById("cameraTrack");
+  <!-- =========================
+       PAGE 05 — FINALE
+  ========================== -->
 
-let dragging = false;
-let startX = 0;
-let currentTranslate = 0;
-let previousTranslate = 0;
+  <section class="page finale-page" id="finalePage">
 
+    <div id="confetti"></div>
 
-cameraWrap.addEventListener(
-  "pointerdown",
-  e => {
+    <div class="finale-inner">
 
-    dragging = true;
+      <span>
+        05 / THE END
+      </span>
 
-    startX = e.clientX;
+      <h2>
+        Happiest Birthday
+        <em>Weirdo.</em>
+      </h2>
 
-    cameraWrap.setPointerCapture(e.pointerId);
+      <p>
+        Stay goated, twin. ♡
+      </p>
 
-    cameraTrack.style.animationPlayState =
-      "paused";
+      <button id="finalMusicButton">
+        ♫ <span>PLAY HARVEY AGAIN</span>
+      </button>
 
-  }
-);
+    </div>
 
+    <div class="final-bottom">
+      made with entirely unnecessary effort.
+    </div>
 
-cameraWrap.addEventListener(
-  "pointermove",
-  e => {
+  </section>
 
-    if (!dragging) return;
 
-    const movement =
-      e.clientX - startX;
+  <script src="script.js"></script>
 
-    currentTranslate =
-      previousTranslate + movement;
-
-    cameraTrack.style.transform =
-      `translateX(${currentTranslate}px)`;
-
-  }
-);
-
-
-cameraWrap.addEventListener(
-  "pointerup",
-  () => {
-
-    dragging = false;
-
-    previousTranslate =
-      currentTranslate;
-
-  }
-);
-
-
-cameraWrap.addEventListener(
-  "pointercancel",
-  () => {
-
-    dragging = false;
-
-  }
-);
-
-
-/* =========================================================
-   SCROLL PARALLAX
-========================================================= */
-
-const heroTitle =
-  document.querySelector(".hero-title");
-
-const heroOrbit =
-  document.querySelector(".orbit-one");
-
-window.addEventListener(
-  "scroll",
-  () => {
-
-    const scroll =
-      window.scrollY;
-
-    if (scroll < window.innerHeight) {
-
-      heroTitle.style.transform =
-        `translateY(${scroll * 0.12}px)`;
-
-      heroOrbit.style.transform =
-        `rotate(${scroll * 0.03}deg) translateY(${scroll * 0.04}px)`;
-
-    }
-
-  },
-  { passive: true }
-);
-
-
-/* =========================================================
-   PARTICLES
-========================================================= */
-
-const particleContainer =
-  document.getElementById("particles");
-
-for (let i = 0; i < 35; i++) {
-
-  const particle =
-    document.createElement("span");
-
-  particle.className =
-    "particle";
-
-  particle.style.left =
-    `${Math.random() * 100}%`;
-
-  particle.style.animationDuration =
-    `${12 + Math.random() * 18}s`;
-
-  particle.style.animationDelay =
-    `${Math.random() * -20}s`;
-
-  particle.style.opacity =
-    `${0.1 + Math.random() * 0.4}`;
-
-  particleContainer.appendChild(
-    particle
-  );
-
-}
-
-
-/* =========================================================
-   FLOATING PETALS
-========================================================= */
-
-const petals =
-  document.getElementById("petals");
-
-function createPetal() {
-
-  const petal =
-    document.createElement("span");
-
-  petal.className =
-    "petal";
-
-  petal.textContent =
-    Math.random() > 0.5
-      ? "✦"
-      : "·";
-
-  petal.style.left =
-    `${Math.random() * 100}%`;
-
-  petal.style.fontSize =
-    `${8 + Math.random() * 12}px`;
-
-  petal.style.setProperty(
-    "--x",
-    `${-100 + Math.random() * 200}px`
-  );
-
-  petal.style.animationDuration =
-    `${6 + Math.random() * 8}s`;
-
-  petals.appendChild(petal);
-
-  setTimeout(() => {
-    petal.remove();
-  }, 15000);
-
-}
-
-setInterval(createPetal, 1200);
-
-
-/* =========================================================
-   CAKE COUNTDOWN
-========================================================= */
-
-const blowButton =
-  document.getElementById("blowButton");
-
-const countdown =
-  document.getElementById("countdown");
-
-const wishTitle =
-  document.getElementById("wishTitle");
-
-const wishSub =
-  document.getElementById("wishSub");
-
-const flames =
-  document.querySelectorAll(".candle span");
-
-let countdownRunning = false;
-
-
-blowButton.addEventListener(
-  "click",
-  () => {
-
-    if (countdownRunning) return;
-
-    countdownRunning = true;
-
-    blowButton.disabled = true;
-
-    let numbers =
-      ["3", "2", "1"];
-
-    let index = 0;
-
-
-    function nextNumber() {
-
-      if (index >= numbers.length) {
-
-        flames.forEach(
-          flame => {
-            flame.style.display =
-              "none";
-          }
-        );
-
-        countdown.textContent =
-          "✨";
-
-        countdown.classList.remove(
-          "show"
-        );
-
-        void countdown.offsetWidth;
-
-        countdown.classList.add(
-          "show"
-        );
-
-        setTimeout(
-          createConfetti,
-          350
-        );
-
-        setTimeout(
-          () => {
-
-            wishTitle.textContent =
-              "HAPPIEST BIRTHDAY";
-
-            wishSub.textContent =
-              "WEIRDO. ♡";
-
-            blowButton.textContent =
-              "NOW MAKE A WISH";
-
-            blowButton.disabled =
-              false;
-
-            countdownRunning =
-              false;
-
-          },
-          800
-        );
-
-        return;
-      }
-
-
-      countdown.textContent =
-        numbers[index];
-
-      countdown.classList.remove(
-        "show"
-      );
-
-      void countdown.offsetWidth;
-
-      countdown.classList.add(
-        "show"
-      );
-
-      index++;
-
-      setTimeout(
-        nextNumber,
-        850
-      );
-
-    }
-
-
-    nextNumber();
-
-  }
-);
-
-
-/* =========================================================
-   CONFETTI EXPLOSION
-========================================================= */
-
-function createConfetti() {
-
-  const container =
-    document.getElementById(
-      "confetti"
-    );
-
-  container.innerHTML = "";
-
-  for (let i = 0; i < 90; i++) {
-
-    const piece =
-      document.createElement(
-        "span"
-      );
-
-    piece.className =
-      "confetti-piece";
-
-    const angle =
-      Math.random() *
-      Math.PI *
-      2;
-
-    const distance =
-      180 +
-      Math.random() *
-      600;
-
-    const x =
-      Math.cos(angle) *
-      distance;
-
-    const y =
-      Math.sin(angle) *
-      distance;
-
-    const rotation =
-      Math.random() * 1000;
-
-    piece.style.setProperty(
-      "--x",
-      `${x}px`
-    );
-
-    piece.style.setProperty(
-      "--y",
-      `${y}px`
-    );
-
-    piece.style.setProperty(
-      "--r",
-      `${rotation}deg`
-    );
-
-    piece.style.left =
-      "50%";
-
-    piece.style.top =
-      "50%";
-
-    piece.style.animationDelay =
-      `${Math.random() * .2}s`;
-
-    piece.style.transform =
-      `rotate(${Math.random() * 360}deg)`;
-
-    container.appendChild(
-      piece
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SCROLL REVEAL
-========================================================= */
-
-const revealElements =
-  document.querySelectorAll(
-    ".reveal-heading, .intro-copy, .letter, .wish-section h2"
-  );
-
-const revealObserver =
-  new IntersectionObserver(
-    entries => {
-
-      entries.forEach(entry => {
-
-        if (
-          entry.isIntersecting
-        ) {
-
-          entry.target.style.opacity =
-            "1";
-
-          entry.target.style.transform =
-            "translateY(0)";
-
-        }
-
-      });
-
-    },
-    {
-      threshold: .15
-    }
-  );
-
-
-revealElements.forEach(
-  element => {
-
-    element.style.transition =
-      "opacity 1.2s cubic-bezier(.16,1,.3,1), transform 1.2s cubic-bezier(.16,1,.3,1)";
-
-    element.style.opacity = "0";
-
-    element.style.transform =
-      "translateY(60px)";
-
-    revealObserver.observe(
-      element
-    );
-
-  }
-);
-
-
-/* =========================================================
-   MEMORY CARD TILT
-========================================================= */
-
-document.querySelectorAll(
-  ".memory-card"
-).forEach(card => {
-
-  card.addEventListener(
-    "mousemove",
-    e => {
-
-      if (window.innerWidth < 800)
-        return;
-
-      const rect =
-        card.getBoundingClientRect();
-
-      const x =
-        e.clientX -
-        rect.left;
-
-      const y =
-        e.clientY -
-        rect.top;
-
-      const rotateX =
-        ((y / rect.height) - .5) *
-        -8;
-
-      const rotateY =
-        ((x / rect.width) - .5) *
-        8;
-
-      card.style.transform =
-        `perspective(800px)
-         rotateX(${rotateX}deg)
-         rotateY(${rotateY}deg)
-         scale(1.035)`;
-
-    }
-  );
-
-
-  card.addEventListener(
-    "mouseleave",
-    () => {
-
-      card.style.transform =
-        "";
-
-    }
-  );
-
-});
-
-
-/* =========================================================
-   KEYBOARD SHORTCUT
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  e => {
-
-    if (
-      e.code === "Space" &&
-      e.target.tagName !== "INPUT"
-    ) {
-
-      e.preventDefault();
-
-      toggleMusic();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   MUSIC VISUAL FEEDBACK
-========================================================= */
-
-music.addEventListener(
-  "play",
-  () => {
-
-    musicPlaying = true;
-
-    musicStatus.textContent =
-      "SOUND ON";
-
-  }
-);
-
-
-music.addEventListener(
-  "pause",
-  () => {
-
-    musicPlaying = false;
-
-    musicStatus.textContent =
-      "SOUND OFF";
-
-  }
-);
-
-
-/* =========================================================
-   EASTER EGG
-========================================================= */
-
-let typedKeys = "";
-
-document.addEventListener(
-  "keydown",
-  e => {
-
-    typedKeys +=
-      e.key.toLowerCase();
-
-    typedKeys =
-      typedKeys.slice(-10);
-
-    if (
-      typedKeys.includes("chotu")
-    ) {
-
-      document.body.classList.add(
-        "secret-mode"
-      );
-
-      createConfetti();
-
-      typedKeys = "";
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   DONE.
-========================================================= */
+</body>
+</html>
