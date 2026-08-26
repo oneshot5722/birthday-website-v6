@@ -1,236 +1,206 @@
-const music = document.getElementById("birthdayMusic");
-const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("music");
+const pill = document.getElementById("pill");
+const toggle = document.getElementById("musicToggle");
 
-let musicPlaying = false;
-
+let playing = false;
 
 /* =========================
    MUSIC
 ========================= */
 
-musicBtn.addEventListener("click", async () => {
+function musicToggle() {
+  if (music.paused) {
+    music.play().then(() => {
+      playing = true;
 
-  try {
+      pill.textContent = "♫ HARVEY · ON";
+      toggle.innerHTML = "♫ <span>pause Harvey</span>";
+    }).catch(() => {
+      pill.textContent = "♫ CLICK TO PLAY";
+    });
 
-    if (!musicPlaying) {
+  } else {
+    music.pause();
 
-      await music.play();
+    playing = false;
 
-      musicPlaying = true;
-
-      musicBtn.textContent = "♫ HARVEY · PLAYING";
-      musicBtn.classList.add("playing");
-
-    } else {
-
-      music.pause();
-
-      musicPlaying = false;
-
-      musicBtn.textContent = "♫ PLAY MUSIC";
-      musicBtn.classList.remove("playing");
-
-    }
-
-  } catch (error) {
-
-    console.log("Audio error:", error);
-
-    musicBtn.textContent = "♫ TAP AGAIN";
-
+    pill.textContent = "♫ HARVEY · OFF";
+    toggle.innerHTML = "♫ <span>play Harvey</span>";
   }
+}
+
+
+/* =========================
+   OPEN WEBSITE
+========================= */
+
+document.getElementById("start").addEventListener("click", () => {
+
+  document.getElementById("memories").scrollIntoView({
+    behavior: "smooth"
+  });
+
+  musicToggle();
 
 });
 
 
 /* =========================
-   PAGE NAVIGATION
+   MUSIC BUTTONS
 ========================= */
 
-function showPage(id) {
-
-  const pages =
-    document.querySelectorAll(".page");
-
-  pages.forEach(page => {
-
-    page.classList.remove("active");
-
-  });
-
-  const target =
-    document.getElementById(id);
-
-  if (!target) return;
-
-  target.classList.add("active");
-
-  window.scrollTo({
-    top: 0,
-    behavior: "instant"
-  });
-
-}
+toggle.addEventListener("click", musicToggle);
+pill.addEventListener("click", musicToggle);
 
 
 /* =========================
    CAMERA ROLL
 ========================= */
 
-const roll =
-  document.querySelector(".camera-roll");
+const roll = document.getElementById("roll");
 
 let dragging = false;
 let startX = 0;
-let scrollStart = 0;
+let currentX = 0;
 
-if (roll) {
+roll.addEventListener("pointerdown", (event) => {
 
-  roll.addEventListener("pointerdown", e => {
+  dragging = true;
+  startX = event.clientX;
 
-    dragging = true;
+  roll.style.animationPlayState = "paused";
+  roll.setPointerCapture(event.pointerId);
 
-    startX = e.clientX;
-
-    scrollStart = roll.scrollLeft;
-
-    roll.setPointerCapture(e.pointerId);
-
-  });
+});
 
 
-  roll.addEventListener("pointermove", e => {
+roll.addEventListener("pointermove", (event) => {
 
-    if (!dragging) return;
+  if (!dragging) return;
 
-    const distance =
-      e.clientX - startX;
+  const difference = event.clientX - startX;
 
-    roll.scrollLeft =
-      scrollStart - distance;
+  currentX += difference;
+  startX = event.clientX;
 
-  });
+  roll.style.transform =
+    `translateX(${currentX}px)`;
 
-
-  roll.addEventListener("pointerup", () => {
-
-    dragging = false;
-
-  });
+});
 
 
-  roll.addEventListener("pointercancel", () => {
+roll.addEventListener("pointerup", () => {
 
-    dragging = false;
+  dragging = false;
 
-  });
+});
 
-}
+
+roll.addEventListener("pointercancel", () => {
+
+  dragging = false;
+
+});
 
 
 /* =========================
-   CAKE COUNTDOWN
+   BIRTHDAY CAKE
 ========================= */
 
-let counting = false;
+const blowButton = document.getElementById("blow");
+const cake = document.querySelector(".cake");
+const countdown = document.getElementById("countdown");
 
-function startCountdown() {
+blowButton.addEventListener("click", () => {
 
-  if (counting) return;
+  blowButton.disabled = true;
 
-  counting = true;
+  cake.classList.add("blowing");
 
-  const number =
-    document.getElementById("countdown");
+  let number = 3;
 
-  const button =
-    document.querySelector(".blow-btn");
+  countdown.textContent = number;
 
-  let count = 3;
+  const timer = setInterval(() => {
 
-  if (button) {
-    button.disabled = true;
-    button.textContent = "MAKE A WISH...";
-  }
+    number--;
 
-  number.textContent = count;
+    if (number > 0) {
 
-  const timer =
-    setInterval(() => {
+      countdown.textContent = number;
 
-      count--;
+    } else {
 
-      if (count > 0) {
+      clearInterval(timer);
 
-        number.textContent = count;
+      countdown.textContent = "";
 
-      } else {
+      setTimeout(() => {
 
-        clearInterval(timer);
+        cake.style.display = "none";
 
-        number.textContent = "💨";
+        document
+          .getElementById("finale")
+          .scrollIntoView({
+            behavior: "smooth"
+          });
 
-        createConfetti();
+        createPoppers();
 
-        setTimeout(() => {
+      }, 500);
 
-          showPage("final");
+    }
 
-          counting = false;
+  }, 700);
 
-        }, 1000);
-
-      }
-
-    }, 900);
-
-}
+});
 
 
 /* =========================
-   CONFETTI
+   PARTY POPPERS
 ========================= */
 
-function createConfetti() {
+function createPoppers() {
 
-  const symbols = [
-    "✦",
-    "♡",
-    "✿",
-    "★",
-    "•"
-  ];
+  const container =
+    document.getElementById("poppers");
 
   for (let i = 0; i < 100; i++) {
 
     const piece =
-      document.createElement("span");
+      document.createElement("i");
 
-    piece.className = "confetti";
-
-    piece.textContent =
-      symbols[
-        Math.floor(
-          Math.random() * symbols.length
-        )
-      ];
+    piece.className = "pop";
 
     piece.style.left =
-      Math.random() * 100 + "vw";
+      (45 + Math.random() * 10) + "%";
+
+    piece.style.top = "45%";
+
+    const colors = [
+      "#b76e67",
+      "#e8c9b5",
+      "#fff",
+      "#d7b98c"
+    ];
+
+    piece.style.background =
+      colors[i % colors.length];
+
+    piece.style.setProperty(
+      "--x",
+      (Math.random() * 1000 - 500) + "px"
+    );
+
+    piece.style.setProperty(
+      "--y",
+      (Math.random() * 700 - 350) + "px"
+    );
 
     piece.style.animationDelay =
-      Math.random() * .8 + "s";
+      Math.random() * 0.3 + "s";
 
-    piece.style.animationDuration =
-      2.5 + Math.random() * 2 + "s";
-
-    document.body.appendChild(piece);
-
-    setTimeout(() => {
-
-      piece.remove();
-
-    }, 5000);
+    container.appendChild(piece);
 
   }
 
@@ -238,17 +208,46 @@ function createConfetti() {
 
 
 /* =========================
-   KEYBOARD
+   FLOATING FLOWERS
 ========================= */
 
-document.addEventListener("keydown", e => {
+function createPetal() {
 
-  if (e.code === "Space") {
+  const petal =
+    document.createElement("i");
 
-    e.preventDefault();
+  const symbols = [
+    "✿",
+    "❀",
+    "♡"
+  ];
 
-    musicBtn.click();
+  petal.textContent =
+    symbols[
+      Math.floor(
+        Math.random() * symbols.length
+      )
+    ];
 
-  }
+  petal.style.left =
+    Math.random() * 100 + "vw";
 
-});
+  petal.style.setProperty(
+    "--x",
+    (Math.random() * 180 - 90) + "px"
+  );
+
+  petal.style.animationDuration =
+    5 + Math.random() * 5 + "s";
+
+  document
+    .getElementById("petals")
+    .appendChild(petal);
+
+  setTimeout(() => {
+    petal.remove();
+  }, 11000);
+
+}
+
+setInterval(createPetal, 1000);
