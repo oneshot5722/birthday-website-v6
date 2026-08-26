@@ -1,219 +1,669 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #090909;
+  color: #f4f0e9;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* =========================
+   ATMOSPHERE
+========================= */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -30%;
+  z-index: -5;
+
+  background:
+    radial-gradient(
+      circle at 20% 25%,
+      rgba(102, 53, 82, .42),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 75%,
+      rgba(45, 66, 92, .35),
+      transparent 28%
+    );
+
+  filter: blur(70px);
+
+  animation: atmosphere 14s ease-in-out infinite alternate;
+}
+
+@keyframes atmosphere {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  100% {
+    transform: scale(1.15) rotate(5deg);
+  }
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: .045;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.diamond {
+  position: fixed;
+  width: 430px;
+  height: 430px;
+
+  right: -190px;
+  top: 25%;
 
-  <title>Happy Birthday Chotu ♡</title>
+  border: 1px solid rgba(255,255,255,.07);
 
-  <link rel="stylesheet" href="style.css">
-</head>
+  transform: rotate(45deg);
 
-<body>
+  z-index: -2;
 
-  <div class="noise"></div>
-  <div class="diamond"></div>
+  animation: diamondMove 18s linear infinite;
+}
 
-  <audio id="birthdayMusic" src="harvey.mp3" loop></audio>
+@keyframes diamondMove {
+  from {
+    transform: rotate(45deg);
+  }
 
-  <button id="musicBtn" class="music-btn">
-    ♫ PLAY MUSIC
-  </button>
+  to {
+    transform: rotate(405deg);
+  }
+}
 
-  <!-- HOME -->
-  <section id="home" class="page active">
 
-    <div class="topbar">
-      <span>26 / 08 / 2026</span>
-      <span>HEISTSIXIN PRESENTS</span>
-    </div>
+/* =========================
+   PAGES
+========================= */
 
-    <div class="hero">
+.page {
+  min-height: 100vh;
+  padding: 35px 6vw;
 
-      <div class="eyebrow">
-        A VERY SMALL INTERNET EXPERIENCE
-      </div>
+  display: none;
 
-      <h1>
-        Happy <em>Birthday</em><br>
-        Chotu.
-      </h1>
+  position: relative;
+}
 
-      <p class="intro">
-        I made this for you.
-      </p>
+.page.active {
+  display: flex;
 
-      <button class="enter-btn" onclick="showPage('memories')">
-        ENTER ↗
-      </button>
+  animation:
+    pageIn .8s cubic-bezier(.2,.8,.2,1);
+}
 
-    </div>
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
 
-    <div class="bottom">
-      <span>SCROLL OR CLICK ENTER</span>
-      <span>01 — 05</span>
-    </div>
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  </section>
 
+/* =========================
+   HOME
+========================= */
 
-  <!-- MEMORIES -->
-  <section id="memories" class="page">
+#home {
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    <div class="eyebrow">THE CAMERA ROLL</div>
+.topbar {
+  display: flex;
+  justify-content: space-between;
 
-    <h2 class="section-title">
-      Years of<br>
-      <em>you.</em>
-    </h2>
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 
-    <div class="camera-roll">
+  opacity: .55;
+}
 
-      <div class="photo-card">
-        <img src="photo-02.svg">
-        <span>2010 — tiny chotu</span>
-      </div>
+.hero {
+  margin: auto 0;
+  max-width: 1000px;
+}
 
-      <div class="photo-card">
-        <img src="photo-03.svg">
-        <span>2012 — already iconic</span>
-      </div>
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
 
-      <div class="photo-card">
-        <img src="photo-04.svg">
-        <span>2014 — character development</span>
-      </div>
+  opacity: .5;
 
-      <div class="photo-card">
-        <img src="photo-05.svg">
-        <span>2016 — getting goated</span>
-      </div>
+  margin-bottom: 22px;
+}
 
-      <div class="photo-card">
-        <img src="photo-06.svg">
-        <span>2018 — chaos era</span>
-      </div>
+.hero h1 {
+  font-family: Georgia, "Times New Roman", serif;
 
-      <div class="photo-card">
-        <img src="photo-07.svg">
-        <span>2020 — plot twist</span>
-      </div>
+  font-size: clamp(58px, 10vw, 145px);
 
-      <div class="photo-card">
-        <img src="photo-08.svg">
-        <span>2022 — iconic</span>
-      </div>
+  line-height: .86;
 
-      <div class="photo-card">
-        <img src="photo-09.svg">
-        <span>2024 — still weird</span>
-      </div>
+  font-weight: 400;
 
-      <div class="photo-card">
-        <img src="photo-10.svg">
-        <span>2026 — birthday girl</span>
-      </div>
+  letter-spacing: -7px;
+}
 
-    </div>
+.hero h1 em {
+  font-weight: 400;
+}
 
-    <button class="next-btn" onclick="showPage('letter')">
-      NEXT →
-    </button>
+.intro {
+  margin-top: 30px;
 
-  </section>
+  font-family: Georgia, serif;
 
+  font-size: 22px;
 
-  <!-- LETTER -->
-  <section id="letter" class="page letter-page">
+  opacity: .75;
+}
 
-    <div class="letter">
+.enter-btn {
+  margin-top: 40px;
 
-      <h2>Happiest Birthday, Chotu.</h2>
+  padding: 16px 28px;
 
-      <p>
-        First of all, thanks for clicking this link and giving me access to your data.
-      </p>
+  border: 1px solid rgba(255,255,255,.4);
 
-      <p>
-        I'm genuinely so grateful to have you in my life.
-        So don't kys, don't randomly turn into a cat,
-        and please continue being the absolute menace you are.
-      </p>
+  background: #f4f0e9;
+  color: #090909;
 
-      <p>
-        You're already blessed to have greatness like me around you,
-        obviously.
-      </p>
+  font-weight: bold;
 
-      <p>
-        But seriously — I hope this year gives you everything you deserve,
-        a ridiculous amount of happiness, and enough memories to make
-        this little website look outdated.
-      </p>
+  letter-spacing: 3px;
 
-      <p>
-        Stay goated. Stay weird.
-        And never forget that someone actually sat down
-        and made an entire website for you.
-      </p>
+  cursor: pointer;
 
-      <div class="signature">
-        LOVE YOU, WEIRDO ♡
-      </div>
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
 
-    </div>
+.enter-btn:hover {
+  transform: translateY(-5px);
 
-    <button class="next-btn" onclick="showPage('cake')">
-      NEXT →
-    </button>
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+}
 
-  </section>
+.bottom {
+  display: flex;
+  justify-content: space-between;
 
+  font-size: 10px;
 
-  <!-- CAKE -->
-  <section id="cake" class="page cake-page">
+  letter-spacing: 2px;
 
-    <div class="bunny">🐰</div>
+  opacity: .45;
+}
 
-    <div class="eyebrow">
-      IMPORTANT BIRTHDAY BUSINESS
-    </div>
 
-    <h2>Make a wish.</h2>
+/* =========================
+   MUSIC
+========================= */
 
-    <div id="countdown">
-      3
-    </div>
+.music-btn {
+  position: fixed;
 
-    <button class="blow-btn" onclick="startCountdown()">
-      BLOW THE CAKE 🎂
-    </button>
+  right: 25px;
+  bottom: 25px;
 
-  </section>
+  z-index: 100;
 
+  padding: 13px 19px;
 
-  <!-- END -->
-  <section id="final" class="page final-page">
+  border-radius: 30px;
 
-    <div>
+  border: 1px solid rgba(255,255,255,.25);
 
-      <h2>
-        HAPPIEST<br>
-        BIRTHDAY<br>
-        WEIRDO.
-      </h2>
+  background: rgba(20,20,20,.72);
 
-      <p>
-        LOVE YOU CHOTU ♡<br>
-        STAY GOATED.
-      </p>
+  color: white;
 
-    </div>
+  backdrop-filter: blur(15px);
 
-  </section>
+  cursor: pointer;
 
+  letter-spacing: 1px;
 
-  <script src="script.js"></script>
+  transition: .3s;
+}
 
-</body>
-</html>
+.music-btn:hover {
+  transform: translateY(-3px);
+
+  border-color: white;
+}
+
+.music-btn.playing {
+  box-shadow:
+    0 0 25px rgba(255,255,255,.12);
+}
+
+
+/* =========================
+   MEMORIES
+========================= */
+
+#memories {
+  flex-direction: column;
+}
+
+.section-title {
+  font-family: Georgia, serif;
+
+  font-size: clamp(50px, 8vw, 105px);
+
+  line-height: .9;
+
+  font-weight: 400;
+
+  margin: 45px 0;
+}
+
+.section-title em {
+  font-weight: 400;
+}
+
+.camera-roll {
+  display: flex;
+
+  gap: 20px;
+
+  overflow-x: auto;
+
+  padding:
+    20px
+    10px
+    60px
+    5px;
+
+  scrollbar-width: none;
+
+  cursor: grab;
+}
+
+.camera-roll::-webkit-scrollbar {
+  display: none;
+}
+
+.camera-roll:active {
+  cursor: grabbing;
+}
+
+.photo-card {
+  flex: 0 0 240px;
+
+  height: 310px;
+
+  background: #eee;
+
+  position: relative;
+
+  overflow: hidden;
+
+  transform:
+    rotate(calc((var(--rotation, 0) * 1deg)));
+
+  transition:
+    transform .4s ease,
+    scale .4s ease;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.3);
+}
+
+.photo-card:nth-child(odd) {
+  transform: rotate(-3deg);
+}
+
+.photo-card:nth-child(even) {
+  transform: rotate(3deg);
+}
+
+.photo-card:hover {
+  transform:
+    rotate(0deg)
+    scale(1.06);
+
+  z-index: 5;
+}
+
+.photo-card img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+.photo-card span {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: 25px 15px 14px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(0,0,0,.85)
+    );
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================
+   NEXT BUTTON
+========================= */
+
+.next-btn {
+  position: absolute;
+
+  right: 6vw;
+  bottom: 30px;
+
+  padding: 12px 19px;
+
+  background: transparent;
+
+  color: white;
+
+  border: 1px solid rgba(255,255,255,.3);
+
+  cursor: pointer;
+
+  letter-spacing: 2px;
+
+  transition: .3s;
+}
+
+.next-btn:hover {
+  background: white;
+  color: #090909;
+}
+
+
+/* =========================
+   LETTER
+========================= */
+
+.letter-page {
+  align-items: center;
+
+  justify-content: center;
+}
+
+.letter {
+  width: min(760px, 90vw);
+
+  padding:
+    clamp(30px, 7vw, 75px);
+
+  background: #eee6d7;
+
+  color: #161411;
+
+  box-shadow:
+    20px 30px 80px rgba(0,0,0,.55);
+
+  transform: rotate(-1deg);
+
+  position: relative;
+}
+
+.letter::before {
+  content: "♡";
+
+  position: absolute;
+
+  right: 25px;
+  top: 20px;
+
+  font-size: 25px;
+
+  opacity: .3;
+}
+
+.letter h2 {
+  font-family: Georgia, serif;
+
+  font-size:
+    clamp(40px, 7vw, 78px);
+
+  line-height: .95;
+
+  font-weight: 400;
+
+  margin-bottom: 35px;
+}
+
+.letter p {
+  font-family: Georgia, serif;
+
+  font-size: 18px;
+
+  line-height: 1.8;
+
+  margin-bottom: 18px;
+}
+
+.signature {
+  margin-top: 35px;
+
+  font-size: 12px;
+
+  letter-spacing: 4px;
+}
+
+
+/* =========================
+   CAKE
+========================= */
+
+.cake-page {
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.bunny {
+  font-size: 85px;
+
+  animation:
+    bunnyBounce 1s ease-in-out infinite alternate;
+}
+
+@keyframes bunnyBounce {
+  from {
+    transform: translateY(0) rotate(-4deg);
+  }
+
+  to {
+    transform: translateY(-15px) rotate(4deg);
+  }
+}
+
+.cake-page h2 {
+  font-family: Georgia, serif;
+
+  font-size:
+    clamp(50px, 9vw, 110px);
+
+  font-weight: 400;
+
+  margin: 10px 0;
+}
+
+#countdown {
+  font-size: 100px;
+
+  font-weight: bold;
+
+  margin: 10px 0 25px;
+}
+
+.blow-btn {
+  padding: 15px 27px;
+
+  background: white;
+
+  color: #090909;
+
+  border: none;
+
+  cursor: pointer;
+
+  font-weight: bold;
+
+  letter-spacing: 2px;
+
+  transition: .3s;
+}
+
+.blow-btn:hover {
+  transform: scale(1.06);
+}
+
+
+/* =========================
+   FINAL
+========================= */
+
+.final-page {
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.final-page h2 {
+  font-family: Georgia, serif;
+
+  font-size:
+    clamp(55px, 11vw, 150px);
+
+  line-height: .86;
+
+  font-weight: 400;
+
+  letter-spacing: -5px;
+}
+
+.final-page p {
+  margin-top: 35px;
+
+  letter-spacing: 4px;
+
+  font-size: 12px;
+
+  opacity: .6;
+}
+
+
+/* =========================
+   CONFETTI
+========================= */
+
+.confetti {
+  position: fixed;
+
+  top: -30px;
+
+  width: 8px;
+  height: 15px;
+
+  z-index: 200;
+
+  animation:
+    confettiFall 3.5s linear forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform:
+      translateY(110vh)
+      rotate(720deg);
+  }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+  .page {
+    padding: 25px 5vw;
+  }
+
+  .topbar {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .hero h1 {
+    letter-spacing: -4px;
+  }
+
+  .photo-card {
+    flex-basis: 190px;
+    height: 250px;
+  }
+
+  .music-btn {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .letter {
+    margin-bottom: 30px;
+  }
+
+  .letter p {
+    font-size: 16px;
+  }
+
+  .next-btn {
+    right: 5vw;
+  }
+}
