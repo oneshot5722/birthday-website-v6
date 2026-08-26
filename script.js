@@ -1,572 +1,236 @@
-const music = document.getElementById("harveyMusic");
-const musicButton = document.getElementById("musicButton");
-const musicText = document.getElementById("musicText");
-
-const enterButton = document.getElementById("enterButton");
-const wishButton = document.getElementById("wishButton");
-const finalMusicButton = document.getElementById("finalMusicButton");
-
-const pages = [
-  document.getElementById("introPage"),
-  document.getElementById("archivePage"),
-  document.getElementById("letterPage"),
-  document.getElementById("wishPage"),
-  document.getElementById("finalePage")
-];
-
-let currentPage = 0;
-let musicOn = false;
-let changingPage = false;
-
-
-/* =====================================================
-   LOADER
-===================================================== */
-
-let progress = 0;
-
-const loader = document.getElementById("loader");
-const loaderNumber = document.getElementById("loaderNumber");
-const loaderBar = document.getElementById("loaderBar");
-
-const loaderTimer = setInterval(() => {
-
-  progress += Math.floor(Math.random() * 8) + 5;
-
-  if (progress >= 100) {
-
-    progress = 100;
-
-    clearInterval(loaderTimer);
-
-    setTimeout(() => {
-      loader.classList.add("hidden");
-    }, 350);
-  }
-
-  loaderNumber.textContent =
-    String(progress).padStart(2, "0");
-
-  loaderBar.style.width =
-    progress + "%";
-
-}, 90);
-
-
-/* =====================================================
-   PAGE SYSTEM
-===================================================== */
-
-function showPage(index) {
-
-  if (
-    index < 0 ||
-    index >= pages.length ||
-    index === currentPage ||
-    changingPage
-  ) {
-    return;
-  }
-
-  changingPage = true;
-
-  const oldPage = pages[currentPage];
-  const newPage = pages[index];
-
-  oldPage.classList.remove("active");
-  oldPage.classList.add("page-out");
-
-  newPage.classList.add("active");
-
-  currentPage = index;
-
-  setTimeout(() => {
-
-    oldPage.classList.remove("page-out");
-
-    changingPage = false;
-
-  }, 900);
-}
-
-
-/* =====================================================
-   ENTER
-===================================================== */
-
-enterButton.addEventListener("click", async (event) => {
-
-  event.preventDefault();
-  event.stopPropagation();
-
-  /* Start music directly from the user's click */
-  try {
-
-    music.volume = 0.65;
-
-    await music.play();
-
-    musicOn = true;
-
-    musicText.textContent =
-      "HARVEY · PLAYING";
-
-    musicButton.classList.add("playing");
-
-  } catch (error) {
-
-    console.log("Music blocked:", error);
-
-    musicText.textContent =
-      "TAP ♫ TO PLAY";
-
-  }
-
-  /* Move to archive */
-  showPage(1);
-
-});
-
-
-/* =====================================================
-   MUSIC BUTTON
-===================================================== */
-
-musicButton.addEventListener("click", async (event) => {
-
-  event.preventDefault();
-  event.stopPropagation();
-
-  if (musicOn) {
-
-    music.pause();
-
-    musicOn = false;
-
-    musicText.textContent =
-      "PLAY HARVEY";
-
-    musicButton.classList.remove("playing");
-
-  } else {
-
-    try {
-
-      await music.play();
-
-      musicOn = true;
-
-      musicText.textContent =
-        "HARVEY · PLAYING";
-
-      musicButton.classList.add("playing");
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-  }
-
-});
-
-
-/* =====================================================
-   CAMERA ROLL
-===================================================== */
-
-const cameraWindow =
-  document.querySelector(".camera-window");
-
-const cameraTrack =
-  document.getElementById("cameraTrack");
-
-let dragging = false;
-let startX = 0;
-let startPosition = 0;
-
-cameraWindow.addEventListener("pointerdown", event => {
-
-  dragging = true;
-
-  startX = event.clientX;
-
-  startPosition =
-    cameraTrack.getBoundingClientRect().left;
-
-  cameraTrack.style.animationPlayState =
-    "paused";
-
-  cameraWindow.setPointerCapture(
-    event.pointerId
-  );
-
-});
-
-
-cameraWindow.addEventListener("pointermove", event => {
-
-  if (!dragging) return;
-
-  const difference =
-    event.clientX - startX;
-
-  cameraTrack.style.transform =
-    `translateX(${difference}px)`;
-
-});
-
-
-cameraWindow.addEventListener("pointerup", () => {
-
-  dragging = false;
-
-});
-
-
-/* =====================================================
-   WISH BUTTON
-===================================================== */
-
-let wishStarted = false;
-
-wishButton.addEventListener("click", event => {
-
-  event.preventDefault();
-
-  if (wishStarted) return;
-
-  wishStarted = true;
-
-  const heading =
-    document.getElementById("wishHeading");
-
-  const text =
-    document.getElementById("wishText");
-
-  const flames =
-    document.querySelectorAll(".flames i");
-
-  const numbers = ["3", "2", "1"];
-
-  let i = 0;
-
-  wishButton.style.pointerEvents =
-    "none";
-
-
-  function next() {
-
-    if (i < numbers.length) {
-
-      heading.textContent =
-        numbers[i];
-
-      text.textContent =
-        i === 0
-          ? "MAKE A WISH."
-          : i === 1
-            ? "ALMOST..."
-            : "BLOW.";
-
-      heading.animate(
-        [
-          {
-            transform: "scale(.4)",
-            opacity: 0
-          },
-          {
-            transform: "scale(1)",
-            opacity: 1
-          }
-        ],
-        {
-          duration: 500,
-          easing: "cubic-bezier(.16,1,.3,1)"
+/* =========================================================
+   BIRTHDAY WEBSITE — INTERACTION ENGINE
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const enterBtn = document.querySelector("#enterBtn");
+  const wishBtn = document.querySelector("#wishBtn");
+  const musicBtn = document.querySelector("#musicBtn");
+  const music = document.querySelector("#birthdayMusic");
+
+  const intro = document.querySelector("#intro");
+  const main = document.querySelector("#main");
+  const wishPage = document.querySelector("#wishPage");
+
+  /* ---------------- MUSIC ---------------- */
+
+  let playing = false;
+
+  if (musicBtn && music) {
+    musicBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      try {
+        if (!playing) {
+          await music.play();
+          playing = true;
+          musicBtn.classList.add("playing");
+          musicBtn.innerHTML = "♫ MUSIC ON";
+        } else {
+          music.pause();
+          playing = false;
+          musicBtn.classList.remove("playing");
+          musicBtn.innerHTML = "♫ MUSIC";
         }
-      );
-
-      i++;
-
-      setTimeout(next, 850);
-
-      return;
-    }
-
-
-    /* Blow candles */
-
-    flames.forEach(flame => {
-
-      flame.animate(
-        [
-          {
-            opacity: 1,
-            transform: "scale(1)"
-          },
-          {
-            opacity: 0,
-            transform:
-              "translateY(-35px) scale(.1)"
-          }
-        ],
-        {
-          duration: 500,
-          fill: "forwards"
-        }
-      );
-
+      } catch (error) {
+        console.log("Music could not start:", error);
+        musicBtn.innerHTML = "CLICK AGAIN ♫";
+      }
     });
+  }
 
+  /* ---------------- PAGE TRANSITION ---------------- */
 
-    heading.textContent = "♡";
-    text.textContent = "WISH GRANTED.";
+  function openMain() {
+    if (!intro || !main) return;
 
-    createConfetti();
-
-
-    /* BIG SCREEN CHANGE */
+    intro.classList.add("leave");
 
     setTimeout(() => {
-
-      showPage(4);
-
-      wishStarted = false;
-
-      wishButton.style.pointerEvents =
-        "auto";
-
-    }, 1000);
-
+      intro.style.display = "none";
+      main.classList.add("active");
+      window.scrollTo({
+        top: 0,
+        behavior: "instant"
+      });
+    }, 700);
   }
 
-  next();
-
-});
-
-
-/* =====================================================
-   CONFETTI
-===================================================== */
-
-function createConfetti() {
-
-  const container =
-    document.getElementById("confetti");
-
-  container.innerHTML = "";
-
-  for (let i = 0; i < 120; i++) {
-
-    const piece =
-      document.createElement("span");
-
-    piece.className =
-      "confetti-piece";
-
-    const angle =
-      Math.random() *
-      Math.PI * 2;
-
-    const distance =
-      200 + Math.random() * 650;
-
-    const x =
-      Math.cos(angle) * distance;
-
-    const y =
-      Math.sin(angle) * distance;
-
-    piece.style.setProperty(
-      "--x",
-      `${x}px`
-    );
-
-    piece.style.setProperty(
-      "--y",
-      `${y}px`
-    );
-
-    piece.style.setProperty(
-      "--r",
-      `${Math.random() * 1000}deg`
-    );
-
-    container.appendChild(piece);
-
+  if (enterBtn) {
+    enterBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      openMain();
+    });
   }
 
-}
+  /* ---------------- WISH PAGE ---------------- */
 
+  if (wishBtn) {
+    wishBtn.addEventListener("click", (e) => {
+      e.preventDefault();
 
-/* =====================================================
-   FINAL MUSIC
-===================================================== */
+      if (!wishPage) return;
 
-finalMusicButton.addEventListener("click", async () => {
+      wishPage.classList.add("show");
 
-  if (musicOn) {
-
-    music.pause();
-
-    musicOn = false;
-
-    finalMusicButton.innerHTML =
-      "♫ <span>PLAY HARVEY AGAIN</span>";
-
-  } else {
-
-    try {
-
-      await music.play();
-
-      musicOn = true;
-
-      finalMusicButton.innerHTML =
-        "♫ <span>HARVEY · PLAYING</span>";
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
+      setTimeout(() => {
+        wishPage.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 50);
+    });
   }
 
-});
+  /* ---------------- SCROLL INDICATOR ---------------- */
 
+  const scrollText = document.querySelector(".scroll-text");
 
-/* =====================================================
-   CURSOR
-===================================================== */
-
-const cursor =
-  document.querySelector(".cursor");
-
-const cursorRing =
-  document.querySelector(".cursor-ring");
-
-let mouseX = 0;
-let mouseY = 0;
-
-let ringX = 0;
-let ringY = 0;
-
-
-window.addEventListener("mousemove", event => {
-
-  mouseX = event.clientX;
-  mouseY = event.clientY;
-
-  cursor.style.left =
-    mouseX + "px";
-
-  cursor.style.top =
-    mouseY + "px";
-
-});
-
-
-function cursorLoop() {
-
-  ringX +=
-    (mouseX - ringX) * .12;
-
-  ringY +=
-    (mouseY - ringY) * .12;
-
-  cursorRing.style.left =
-    ringX + "px";
-
-  cursorRing.style.top =
-    ringY + "px";
-
-  requestAnimationFrame(cursorLoop);
-
-}
-
-cursorLoop();
-
-
-document.querySelectorAll(
-  "button, .photo-card"
-).forEach(element => {
-
-  element.addEventListener(
-    "mouseenter",
+  window.addEventListener(
+    "scroll",
     () => {
-      document.body.classList.add("hovering");
-    }
+      if (!scrollText) return;
+
+      if (window.scrollY > 100) {
+        scrollText.style.opacity = "0";
+      } else {
+        scrollText.style.opacity = "1";
+      }
+    },
+    { passive: true }
   );
 
-  element.addEventListener(
-    "mouseleave",
+  /* ---------------- PHOTO PARALLAX ---------------- */
+
+  const photos = document.querySelectorAll(".memory-photo");
+
+  window.addEventListener(
+    "scroll",
     () => {
-      document.body.classList.remove("hovering");
+      photos.forEach((photo) => {
+        const rect = photo.getBoundingClientRect();
+        const center = window.innerHeight / 2;
+        const distance = rect.top + rect.height / 2 - center;
+
+        if (Math.abs(distance) < window.innerHeight) {
+          photo.style.transform =
+            `translateY(${distance * -0.025}px)`;
+        }
+      });
+    },
+    { passive: true }
+  );
+
+  /* ---------------- FLOATING PARTICLES ---------------- */
+
+  const particleContainer =
+    document.querySelector(".particles");
+
+  if (particleContainer) {
+    for (let i = 0; i < 28; i++) {
+      const particle = document.createElement("span");
+
+      particle.className = "particle";
+
+      particle.style.left =
+        Math.random() * 100 + "%";
+
+      particle.style.animationDelay =
+        Math.random() * 8 + "s";
+
+      particle.style.animationDuration =
+        7 + Math.random() * 8 + "s";
+
+      particleContainer.appendChild(particle);
     }
-  );
+  }
+
+  /* ---------------- CAKE COUNTDOWN ---------------- */
+
+  const cakeBtn = document.querySelector("#cakeBtn");
+  const countdown = document.querySelector("#countdown");
+  const celebration = document.querySelector("#celebration");
+
+  if (cakeBtn) {
+    cakeBtn.addEventListener("click", () => {
+      cakeBtn.disabled = true;
+
+      let count = 3;
+
+      if (countdown) {
+        countdown.classList.add("visible");
+        countdown.textContent = count;
+      }
+
+      const timer = setInterval(() => {
+        count--;
+
+        if (count > 0) {
+          if (countdown) countdown.textContent = count;
+        } else {
+          clearInterval(timer);
+
+          if (countdown) {
+            countdown.textContent = "🎉";
+          }
+
+          if (celebration) {
+            celebration.classList.add("explode");
+          }
+
+          createConfetti();
+
+          setTimeout(() => {
+            if (countdown) {
+              countdown.textContent =
+                "HAPPIEST BIRTHDAY, WEIRDO ♡";
+            }
+          }, 700);
+        }
+      }, 1000);
+    });
+  }
+
+  /* ---------------- CONFETTI ---------------- */
+
+  function createConfetti() {
+    const symbols = ["✦", "♡", "✿", "•", "★"];
+
+    for (let i = 0; i < 80; i++) {
+      const piece = document.createElement("span");
+
+      piece.className = "confetti";
+      piece.textContent =
+        symbols[Math.floor(Math.random() * symbols.length)];
+
+      piece.style.left =
+        Math.random() * 100 + "vw";
+
+      piece.style.top =
+        "-20px";
+
+      piece.style.animationDelay =
+        Math.random() * 0.8 + "s";
+
+      piece.style.animationDuration =
+        2 + Math.random() * 3 + "s";
+
+      document.body.appendChild(piece);
+
+      setTimeout(() => {
+        piece.remove();
+      }, 5000);
+    }
+  }
+
+  /* ---------------- KEYBOARD ENTER ---------------- */
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      if (intro && !intro.classList.contains("leave")) {
+        openMain();
+      }
+    }
+  });
 
 });
-
-
-/* =====================================================
-   KEYBOARD — NO MORE WHEEL FIGHTING
-===================================================== */
-
-document.addEventListener("keydown", event => {
-
-  if (
-    event.target.tagName === "INPUT" ||
-    event.target.tagName === "TEXTAREA"
-  ) {
-    return;
-  }
-
-  if (event.key === "ArrowDown") {
-
-    event.preventDefault();
-
-    showPage(
-      Math.min(
-        currentPage + 1,
-        pages.length - 1
-      )
-    );
-
-  }
-
-  if (event.key === "ArrowUp") {
-
-    event.preventDefault();
-
-    showPage(
-      Math.max(
-        currentPage - 1,
-        0
-      )
-    );
-
-  }
-
-});
-
-
-/* =====================================================
-   START
-===================================================== */
-
-pages.forEach((page, index) => {
-
-  page.classList.remove(
-    "active",
-    "page-out"
-  );
-
-  if (index === 0) {
-    page.classList.add("active");
-  }
-
-});
-
-console.log("♡ BIRTHDAY EXPERIENCE READY");
