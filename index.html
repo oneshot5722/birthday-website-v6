@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>For Chotu — 2026</title>
+  <title>For Chotu ♡</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,789 +16,369 @@
 
 <body>
 
-  <!-- =====================================================
-       LOADER
-  ====================================================== -->
-
+  <!-- LOADING SCREEN -->
   <div id="loader">
-
-    <div class="loader-inner">
-
-      <div class="loader-number">
-        <span id="loadNumber">00</span>
+    <div class="loader-content">
+      <div class="loader-edition">LIMITED EDITION</div>
+      <div class="loader-number" id="loaderNumber">00</div>
+      <div class="loader-bar">
+        <span id="loaderBar"></span>
       </div>
-
-      <div class="loader-line">
-        <span></span>
-      </div>
-
-      <p>
-        preparing something for chotu...
-      </p>
-
+      <p>something made for chotu</p>
     </div>
-
   </div>
 
 
-  <!-- =====================================================
-       CURSOR
-  ====================================================== -->
+  <!-- AMBIENT BACKGROUND -->
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
 
-  <div class="cursor"></div>
-  <div class="cursor-trail"></div>
-
-
-  <!-- =====================================================
-       GLOBAL EFFECTS
-  ====================================================== -->
+  <div class="diamond">
+    <span>LIMITED</span>
+    <strong>♡</strong>
+    <span>EDITION</span>
+  </div>
 
   <div class="grain"></div>
 
-  <div id="particles"></div>
+  <!-- CURSOR -->
+  <div class="cursor"></div>
+  <div class="cursor-ring"></div>
 
-  <div id="petals"></div>
 
-
-  <!-- =====================================================
-       MUSIC
-  ====================================================== -->
-
-  <audio
-    id="music"
-    src="harvey.mp3"
-    preload="auto">
+  <!-- MUSIC -->
+  <audio id="harveyMusic" preload="auto">
+    <source src="harvey.mp3" type="audio/mpeg">
   </audio>
 
-
-  <!-- =====================================================
-       MUSIC BUTTON
-  ====================================================== -->
-
-  <button id="musicButton" class="music-control">
-
-    <span class="music-icon">♫</span>
-
-    <span class="music-status">
-      SOUND OFF
-    </span>
-
+  <button id="musicButton" class="music-button">
+    <span class="music-symbol">♫</span>
+    <span id="musicText">PLAY HARVEY</span>
   </button>
 
 
-  <!-- =====================================================
-       HERO
-  ====================================================== -->
+  <!-- =========================
+       PAGE 01 — INTRO
+  ========================== -->
 
-  <main>
+  <section class="page page-intro active" id="introPage">
 
-    <section class="hero">
+    <div class="top-info">
+      <span>26 / 08 / 2026</span>
+      <span>HEISTSIXIN PRESENTS</span>
+    </div>
 
-      <div class="hero-orbit orbit-one"></div>
-      <div class="hero-orbit orbit-two"></div>
 
-      <div class="hero-flower flower-a">✿</div>
-      <div class="hero-flower flower-b">❀</div>
+    <div class="intro-center">
 
-      <div class="hero-meta">
-        <span>26 · 08 · 2026</span>
+      <div class="tiny-label">
+        A VERY SMALL INTERNET EXPERIENCE
+      </div>
+
+      <h1>
+        Happy
+        <em>Birthday</em>
+        Chotu.
+      </h1>
+
+      <p>
+        I made this instead of buying you something normal.
+        <br>
+        You're welcome.
+      </p>
+
+      <button id="enterButton" class="main-button">
+        <span>ENTER</span>
+        <b>↗</b>
+      </button>
+
+    </div>
+
+
+    <div class="bottom-info">
+
+      <div class="scroll-hint">
+        <span>SCROLL</span>
+        <i></i>
+        <span>OR CLICK ENTER</span>
+      </div>
+
+      <span>01 — 05</span>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       PAGE 02 — ARCHIVE
+  ========================== -->
+
+  <section class="page archive-page" id="archivePage">
+
+    <div class="page-header">
+      <div>
+        <small>02</small>
+        <span>THE CAMERA ROLL</span>
+      </div>
+
+      <p>
+        then → now
+      </p>
+    </div>
+
+
+    <div class="archive-heading">
+      <span>years of</span>
+      <strong>chotu.</strong>
+    </div>
+
+
+    <div class="camera-window">
+
+      <div class="camera-track" id="cameraTrack">
+
+        <div class="photo-card">
+          <span class="year">2010</span>
+          <img src="assets/photo-01.jpg" alt="2010">
+          <small>tiny chotu.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2012</span>
+          <img src="assets/photo-02.jpg" alt="2012">
+          <small>already iconic.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2014</span>
+          <img src="assets/photo-03.jpg" alt="2014">
+          <small>the lore begins.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2016</span>
+          <img src="assets/photo-04.jpg" alt="2016">
+          <small>character development.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2018</span>
+          <img src="assets/photo-05.jpg" alt="2018">
+          <small>still goated.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2020</span>
+          <img src="assets/photo-06.jpg" alt="2020">
+          <small>somehow survived.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2022</span>
+          <img src="assets/photo-07.jpg" alt="2022">
+          <small>look at you.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2024</span>
+          <img src="assets/photo-08.jpg" alt="2024">
+          <small>almost there.</small>
+        </div>
+
+        <div class="photo-card">
+          <span class="year">2026</span>
+          <img src="assets/photo-09.jpg" alt="2026">
+          <small>my favourite.</small>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="archive-footer">
+      <span>DRAG TO EXPLORE</span>
+      <div></div>
+      <span>09 MEMORIES</span>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       PAGE 03 — LETTER
+  ========================== -->
+
+  <section class="page letter-page" id="letterPage">
+
+    <div class="letter-paper">
+
+      <div class="letter-top">
+        <span>03 / LETTER</span>
         <span>FOR CHOTU</span>
       </div>
 
-
-      <div class="hero-content">
-
-        <p class="hero-eyebrow">
-          I made you something
-        </p>
-
-        <h1 class="hero-title">
-
-          <span class="title-line">
-            Happy
-          </span>
-
-          <span class="title-line title-script">
-            Birthday,
-          </span>
-
-          <span class="title-line">
-            Chotu.
-          </span>
-
-        </h1>
-
-
-        <p class="hero-subtitle">
-
-          Don't close this yet.
-
-          <br>
-
-          There's a reason I made you click.
-
-        </p>
-
-
-        <button id="openButton" class="hero-button magnetic">
-
-          <span>
-            enter
-          </span>
-
-          <b>
-            ↗
-          </b>
-
-        </button>
-
+      <div class="letter-date">
+        AUGUST 26 · 2026
       </div>
 
-
-      <div class="hero-bottom">
-
-        <span>
-          SCROLL
-        </span>
-
-        <div class="scroll-line">
-          <span></span>
-        </div>
-
-        <span>
-          DOWN
-        </span>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         INTRO
-    ====================================================== -->
-
-    <section class="intro-section">
-
-      <div class="intro-left">
-
-        <span class="section-number">
-          01
-        </span>
-
-        <span class="section-name">
-          THE ARCHIVE
-        </span>
-
-      </div>
-
-
-      <div class="intro-main">
-
-        <p class="reveal-text">
-          Before you continue...
-        </p>
-
-        <h2 class="reveal-heading">
-
-          I wanted to make
-
-          <span>
-            something
-          </span>
-
-          you couldn't just
-          scroll past.
-
-        </h2>
-
-
-        <p class="intro-copy">
-
-          So here's a tiny piece of the internet
-          that belongs entirely to you today.
-
-        </p>
-
-
-        <div class="scroll-message">
-
-          <span>KEEP SCROLLING</span>
-
-          <span class="arrow">
-            ↓
-          </span>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         CAMERA ROLL
-    ====================================================== -->
-
-    <section class="archive-section">
-
-      <div class="archive-header">
-
-        <div>
-
-          <span class="section-number">
-            02
-          </span>
-
-          <span class="section-name">
-            CAMERA ROLL
-          </span>
-
-        </div>
-
-
-        <div class="archive-title">
-
-          <span>
-            then
-          </span>
-
-          <strong>
-            → now
-          </strong>
-
-        </div>
-
-
-        <p>
-          swipe through the years.
-        </p>
-
-      </div>
-
-
-      <div class="camera-wrap">
-
-        <div class="camera-track" id="cameraTrack">
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              01
-            </div>
-
-            <img
-              src="assets/photo-01.jpg"
-              alt="2010 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2010
-              </span>
-
-              <strong>
-                tiny chotu.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              02
-            </div>
-
-            <img
-              src="assets/photo-02.jpg"
-              alt="2012 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2012
-              </span>
-
-              <strong>
-                already iconic.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              03
-            </div>
-
-            <img
-              src="assets/photo-03.jpg"
-              alt="2014 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2014
-              </span>
-
-              <strong>
-                chaos begins.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              04
-            </div>
-
-            <img
-              src="assets/photo-04.jpg"
-              alt="2016 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2016
-              </span>
-
-              <strong>
-                growing up.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              05
-            </div>
-
-            <img
-              src="assets/photo-05.jpg"
-              alt="2018 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2018
-              </span>
-
-              <strong>
-                the good years.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              06
-            </div>
-
-            <img
-              src="assets/photo-06.jpg"
-              alt="2020 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2020
-              </span>
-
-              <strong>
-                still you.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              07
-            </div>
-
-            <img
-              src="assets/photo-07.jpg"
-              alt="2022 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2022
-              </span>
-
-              <strong>
-                look at you.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              08
-            </div>
-
-            <img
-              src="assets/photo-08.jpg"
-              alt="2024 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2024
-              </span>
-
-              <strong>
-                almost there.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <article class="memory-card">
-
-            <div class="card-number">
-              09
-            </div>
-
-            <img
-              src="assets/photo-09.jpg"
-              alt="2026 memory">
-
-            <div class="card-caption">
-
-              <span>
-                2026
-              </span>
-
-              <strong>
-                my favourite.
-              </strong>
-
-            </div>
-
-          </article>
-
-
-        </div>
-
-      </div>
-
-
-      <div class="camera-footer">
-
-        <span>
-          DRAG
-        </span>
-
-        <div></div>
-
-        <span>
-          SWIPE
-        </span>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         LETTER
-    ====================================================== -->
-
-    <section class="letter-section">
-
-      <div class="letter-background-word">
-        YOU
-      </div>
-
-
-      <div class="letter">
-
-        <div class="letter-top">
-
-          <span>
-            03 / A LETTER
-          </span>
-
-          <span>
-            FOR YOUR EYES ONLY
-          </span>
-
-        </div>
-
-
-        <div class="letter-date">
-          AUGUST 26 · 2026
-        </div>
-
-
-        <h2>
-          Dear
-          <span>
-            Chotu,
-          </span>
-        </h2>
-
-
-        <div class="letter-body">
-
-          <p>
-            Happiest Birthday, Chotu ♡
-          </p>
-
-
-          <p>
-            First of all, thanks for clicking this link
-            and willingly giving me access to your data.
-            Very brave of you. Questionable decision.
-            I respect it.
-          </p>
-
-
-          <p>
-            But genuinely, I'm so grateful to have you
-            in my life. You're one of those people who
-            somehow manages to make everything more
-            chaotic, funnier and somehow better.
-          </p>
-
-
-          <p>
-            So please don't kys, don't turn into a cat,
-            and don't forget that you're already extremely
-            blessed to have greatness like me around.
-          </p>
-
-
-          <p>
-            Another year of you deserves another year
-            of ridiculous memories, stupid jokes,
-            random conversations and things we'll probably
-            never admit happened.
-          </p>
-
-
-          <p>
-            I hope this year is ridiculously good to you.
-            I hope you laugh until your stomach hurts,
-            get everything you secretly wish for,
-            and make memories you'll still talk about
-            years from now.
-          </p>
-
-
-          <p>
-            Stay exactly as weird as you are.
-            Stay goated.
-            And please don't develop too much character.
-          </p>
-
-
-          <p class="letter-love">
-            I love you.
-          </p>
-
-
-          <p>
-            Happiest birthday, twin.
-            Now go enjoy your day.
-          </p>
-
-        </div>
-
-
-        <div class="letter-sign">
-
-          —
-          your favourite person,
-          obviously.
-
-        </div>
-
-
-        <div class="letter-stamp">
-          ♡
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         WISH / CAKE
-    ====================================================== -->
-
-    <section class="wish-section">
-
-      <div class="wish-top">
-
-        <span>
-          04 / ONE LAST THING
-        </span>
-
-      </div>
-
-
-      <div class="bunny">
-
-        <div class="bunny-ear left"></div>
-        <div class="bunny-ear right"></div>
-
-        <div class="bunny-face">
-          <span class="eye left-eye"></span>
-          <span class="eye right-eye"></span>
-
-          <span class="nose">
-            ♡
-          </span>
-
-        </div>
-
-      </div>
-
-
-      <p class="wish-small">
-        chotu has been summoned.
-      </p>
-
-
-      <h2 id="wishTitle">
-
-        Make a wish.
-
+      <h2>
+        Dear
+        <em>Chotu,</em>
       </h2>
 
-
-      <p id="wishSub">
-        then blow out the candles.
-      </p>
-
-
-      <div class="cake">
-
-        <div class="cake-candles">
-
-          <div class="candle">
-            <span></span>
-          </div>
-
-          <div class="candle">
-            <span></span>
-          </div>
-
-          <div class="candle">
-            <span></span>
-          </div>
-
-        </div>
-
-
-        <div class="cake-top"></div>
-
-        <div class="cake-body"></div>
-
-      </div>
-
-
-      <button
-        id="blowButton"
-        class="blow-button magnetic">
-
-        BLOW THE CANDLES
-
-      </button>
-
-
-      <div id="countdown"></div>
-
-    </section>
-
-
-    <!-- =====================================================
-         FINALE
-    ====================================================== -->
-
-    <section class="finale">
-
-      <div class="finale-glow"></div>
-
-
-      <div id="confetti"></div>
-
-
-      <div class="finale-content">
-
-        <span class="finale-small">
-          AND THAT'S IT.
-        </span>
-
-
-        <h2>
-
-          Happiest Birthday
-
-          <span>
-            Weirdo.
-          </span>
-
-        </h2>
-
+      <div class="letter-text">
 
         <p>
-          stay goated, twin. ♡
+          Happiest Birthday, Chotu ♡
         </p>
 
+        <p>
+          First of all, thanks for clicking this link and
+          willingly giving me access to your data.
+          Very brave. Questionable decision. I respect it.
+        </p>
 
-        <button
-          id="finalMusic"
-          class="final-music">
+        <p>
+          But genuinely, I'm so grateful to have you.
+          You're one of those people who somehow makes
+          everything more chaotic, funnier and better.
+        </p>
 
-          ♫
-          <span>
-            Harvey
-          </span>
+        <p>
+          So please don't kys, don't turn into a cat,
+          and don't forget that you're already blessed
+          to have greatness like me around.
+        </p>
 
-        </button>
+        <p>
+          I hope this year gives you everything you
+          secretly wish for, ridiculous amounts of happiness,
+          and memories you'll still laugh about years later.
+        </p>
+
+        <p>
+          Stay weird.
+          Stay goated.
+          Don't develop too much character.
+        </p>
+
+        <p class="love">
+          I love you.
+        </p>
+
+        <p>
+          Happiest birthday, twin.
+          Now enjoy your day.
+        </p>
 
       </div>
 
-
-      <div class="finale-bottom">
-        I love you daimkak. · The End.
+      <div class="signature">
+        — your favourite person, obviously.
       </div>
 
-    </section>
+      <div class="stamp">♡</div>
 
-  </main>
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       PAGE 04 — WISH
+  ========================== -->
+
+  <section class="page wish-page" id="wishPage">
+
+    <div class="wish-number">
+      04 / 05
+    </div>
+
+    <div class="bunny">
+      <div class="ear ear-left"></div>
+      <div class="ear ear-right"></div>
+
+      <div class="bunny-head">
+        <span class="bunny-eye eye-left"></span>
+        <span class="bunny-eye eye-right"></span>
+        <span class="bunny-nose">♡</span>
+      </div>
+    </div>
+
+    <p class="wish-label">
+      CHOTU HAS BEEN SUMMONED
+    </p>
+
+    <h2 id="wishHeading">
+      Make a wish.
+    </h2>
+
+    <p id="wishText">
+      You have exactly three seconds.
+    </p>
+
+    <div class="cake">
+
+      <div class="flames">
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
+
+      <div class="candles">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="cake-cream"></div>
+      <div class="cake-body"></div>
+
+    </div>
+
+    <button id="wishButton" class="main-button">
+      BLOW THE CANDLES
+    </button>
+
+  </section>
+
+
+  <!-- =========================
+       PAGE 05 — FINALE
+  ========================== -->
+
+  <section class="page finale-page" id="finalePage">
+
+    <div id="confetti"></div>
+
+    <div class="finale-inner">
+
+      <span>
+        05 / THE END
+      </span>
+
+      <h2>
+        Happiest Birthday
+        <em>Weirdo.</em>
+      </h2>
+
+      <p>
+        Stay goated, twin. ♡
+      </p>
+
+      <button id="finalMusicButton">
+        ♫ <span>PLAY HARVEY AGAIN</span>
+      </button>
+
+    </div>
+
+    <div class="final-bottom">
+      made with entirely unnecessary effort.
+    </div>
+
+  </section>
 
 
   <script src="script.js"></script>
