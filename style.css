@@ -1,45 +1,219 @@
-/* =====================================================
-   CINEMATIC PAGE SWITCHING
-===================================================== */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-.page {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100svh;
-  min-height: 100svh;
+  <title>Happy Birthday Chotu ♡</title>
 
-  opacity: 0;
-  visibility: hidden;
+  <link rel="stylesheet" href="style.css">
+</head>
 
-  transform: translateY(100%);
-  transition:
-    transform .9s cubic-bezier(.77,0,.18,1),
-    opacity .9s ease,
-    visibility 0s linear .9s;
+<body>
 
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+  <div class="noise"></div>
+  <div class="diamond"></div>
 
-.page.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  <audio id="birthdayMusic" src="harvey.mp3" loop></audio>
 
-  transition:
-    transform .9s cubic-bezier(.77,0,.18,1),
-    opacity .9s ease,
-    visibility 0s;
-}
+  <button id="musicBtn" class="music-btn">
+    ♫ PLAY MUSIC
+  </button>
 
-.page.page-out {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-100%);
+  <!-- HOME -->
+  <section id="home" class="page active">
 
-  transition:
-    transform .9s cubic-bezier(.77,0,.18,1),
-    opacity .9s ease,
-    visibility 0s linear .9s;
-}
+    <div class="topbar">
+      <span>26 / 08 / 2026</span>
+      <span>HEISTSIXIN PRESENTS</span>
+    </div>
+
+    <div class="hero">
+
+      <div class="eyebrow">
+        A VERY SMALL INTERNET EXPERIENCE
+      </div>
+
+      <h1>
+        Happy <em>Birthday</em><br>
+        Chotu.
+      </h1>
+
+      <p class="intro">
+        I made this for you.
+      </p>
+
+      <button class="enter-btn" onclick="showPage('memories')">
+        ENTER ↗
+      </button>
+
+    </div>
+
+    <div class="bottom">
+      <span>SCROLL OR CLICK ENTER</span>
+      <span>01 — 05</span>
+    </div>
+
+  </section>
+
+
+  <!-- MEMORIES -->
+  <section id="memories" class="page">
+
+    <div class="eyebrow">THE CAMERA ROLL</div>
+
+    <h2 class="section-title">
+      Years of<br>
+      <em>you.</em>
+    </h2>
+
+    <div class="camera-roll">
+
+      <div class="photo-card">
+        <img src="photo-02.svg">
+        <span>2010 — tiny chotu</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-03.svg">
+        <span>2012 — already iconic</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-04.svg">
+        <span>2014 — character development</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-05.svg">
+        <span>2016 — getting goated</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-06.svg">
+        <span>2018 — chaos era</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-07.svg">
+        <span>2020 — plot twist</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-08.svg">
+        <span>2022 — iconic</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-09.svg">
+        <span>2024 — still weird</span>
+      </div>
+
+      <div class="photo-card">
+        <img src="photo-10.svg">
+        <span>2026 — birthday girl</span>
+      </div>
+
+    </div>
+
+    <button class="next-btn" onclick="showPage('letter')">
+      NEXT →
+    </button>
+
+  </section>
+
+
+  <!-- LETTER -->
+  <section id="letter" class="page letter-page">
+
+    <div class="letter">
+
+      <h2>Happiest Birthday, Chotu.</h2>
+
+      <p>
+        First of all, thanks for clicking this link and giving me access to your data.
+      </p>
+
+      <p>
+        I'm genuinely so grateful to have you in my life.
+        So don't kys, don't randomly turn into a cat,
+        and please continue being the absolute menace you are.
+      </p>
+
+      <p>
+        You're already blessed to have greatness like me around you,
+        obviously.
+      </p>
+
+      <p>
+        But seriously — I hope this year gives you everything you deserve,
+        a ridiculous amount of happiness, and enough memories to make
+        this little website look outdated.
+      </p>
+
+      <p>
+        Stay goated. Stay weird.
+        And never forget that someone actually sat down
+        and made an entire website for you.
+      </p>
+
+      <div class="signature">
+        LOVE YOU, WEIRDO ♡
+      </div>
+
+    </div>
+
+    <button class="next-btn" onclick="showPage('cake')">
+      NEXT →
+    </button>
+
+  </section>
+
+
+  <!-- CAKE -->
+  <section id="cake" class="page cake-page">
+
+    <div class="bunny">🐰</div>
+
+    <div class="eyebrow">
+      IMPORTANT BIRTHDAY BUSINESS
+    </div>
+
+    <h2>Make a wish.</h2>
+
+    <div id="countdown">
+      3
+    </div>
+
+    <button class="blow-btn" onclick="startCountdown()">
+      BLOW THE CAKE 🎂
+    </button>
+
+  </section>
+
+
+  <!-- END -->
+  <section id="final" class="page final-page">
+
+    <div>
+
+      <h2>
+        HAPPIEST<br>
+        BIRTHDAY<br>
+        WEIRDO.
+      </h2>
+
+      <p>
+        LOVE YOU CHOTU ♡<br>
+        STAY GOATED.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
