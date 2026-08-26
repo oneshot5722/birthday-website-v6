@@ -1,219 +1,310 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Happy Birthday, Chotu ♡</title>
 
-  <title>Happy Birthday Chotu ♡</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500&family=Parisienne&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="noise"></div>
-  <div class="diamond"></div>
+<div class="grain"></div>
+<div id="petals"></div>
 
-  <audio id="birthdayMusic" src="harvey.mp3" loop></audio>
+<!-- OPENING -->
+<section class="hero" id="home">
 
-  <button id="musicBtn" class="music-btn">
-    ♫ PLAY MUSIC
-  </button>
+  <span class="tiny top">A LITTLE SOMETHING FOR YOU</span>
 
-  <!-- HOME -->
-  <section id="home" class="page active">
+  <span class="flower f1">✿</span>
+  <span class="flower f2">❀</span>
 
-    <div class="topbar">
-      <span>26 / 08 / 2026</span>
-      <span>HEISTSIXIN PRESENTS</span>
-    </div>
+  <div class="hero-center">
 
-    <div class="hero">
+    <p class="eyebrow">for my favourite twin</p>
 
-      <div class="eyebrow">
-        A VERY SMALL INTERNET EXPERIENCE
-      </div>
+    <h1>
+      Happy Birthday,<br>
+      <em>Chotu ♡</em>
+    </h1>
 
-      <h1>
-        Happy <em>Birthday</em><br>
-        Chotu.
-      </h1>
+    <p class="sub">
+      some memories, a little letter,<br>
+      and a whole lot of love.
+    </p>
 
-      <p class="intro">
-        I made this for you.
-      </p>
+    <button id="start">
+      OPEN THIS <b>↗</b>
+    </button>
 
-      <button class="enter-btn" onclick="showPage('memories')">
-        ENTER ↗
-      </button>
+  </div>
 
-    </div>
+  <span class="tiny bottom">
+    scroll slowly · there is no rush
+  </span>
 
-    <div class="bottom">
-      <span>SCROLL OR CLICK ENTER</span>
-      <span>01 — 05</span>
-    </div>
-
-  </section>
+</section>
 
 
-  <!-- MEMORIES -->
-  <section id="memories" class="page">
+<!-- MEMORIES -->
+<section class="memories" id="memories">
 
-    <div class="eyebrow">THE CAMERA ROLL</div>
+  <div class="head">
 
-    <h2 class="section-title">
-      Years of<br>
-      <em>you.</em>
+    <span class="label">01 / MEMORIES</span>
+
+    <h2>
+      from then<br>
+      <em>to now.</em>
     </h2>
 
-    <div class="camera-roll">
+    <p>
+      temporary memories for now.<br>
+      real photos will replace these later.
+    </p>
 
-      <div class="photo-card">
-        <img src="photo-02.svg">
-        <span>2010 — tiny chotu</span>
-      </div>
+  </div>
 
-      <div class="photo-card">
-        <img src="photo-03.svg">
-        <span>2012 — already iconic</span>
-      </div>
 
-      <div class="photo-card">
-        <img src="photo-04.svg">
-        <span>2014 — character development</span>
-      </div>
+  <div class="roll-area">
 
-      <div class="photo-card">
-        <img src="photo-05.svg">
-        <span>2016 — getting goated</span>
-      </div>
+    <div class="roll-title">
+      CAMERA ROLL · 2010 — 2026
+    </div>
 
-      <div class="photo-card">
-        <img src="photo-06.svg">
-        <span>2018 — chaos era</span>
-      </div>
+    <div class="roll" id="roll">
 
-      <div class="photo-card">
-        <img src="photo-07.svg">
-        <span>2020 — plot twist</span>
-      </div>
+      <figure>
+        <img src="assets/photo-01.svg">
+        <figcaption>2010 · tiny you</figcaption>
+      </figure>
 
-      <div class="photo-card">
-        <img src="photo-08.svg">
-        <span>2022 — iconic</span>
-      </div>
+      <figure>
+        <img src="assets/photo-02.svg">
+        <figcaption>2012 · growing up</figcaption>
+      </figure>
 
-      <div class="photo-card">
-        <img src="photo-09.svg">
-        <span>2024 — still weird</span>
-      </div>
+      <figure>
+        <img src="assets/photo-03.svg">
+        <figcaption>2014 · classic chotu</figcaption>
+      </figure>
 
-      <div class="photo-card">
-        <img src="photo-10.svg">
-        <span>2026 — birthday girl</span>
-      </div>
+      <figure>
+        <img src="assets/photo-04.svg">
+        <figcaption>2016 · school days</figcaption>
+      </figure>
+
+      <figure>
+        <img src="assets/photo-05.svg">
+        <figcaption>2018 · the chaos</figcaption>
+      </figure>
+
+      <figure>
+        <img src="assets/photo-06.svg">
+        <figcaption>2020 · still you</figcaption>
+      </figure>
+
+      <figure>
+        <img src="assets/photo-07.svg">
+        <figcaption>2022 · good days</figcaption>
+      </figure>
+
+      <figure>
+        <img src="assets/photo-08.svg">
+        <figcaption>2024 · another one</figcaption>
+      </figure>
+
+      <figure>
+        <img src="assets/photo-09.svg">
+        <figcaption>2026 · my favourite</figcaption>
+      </figure>
 
     </div>
 
-    <button class="next-btn" onclick="showPage('letter')">
-      NEXT →
-    </button>
-
-  </section>
-
-
-  <!-- LETTER -->
-  <section id="letter" class="page letter-page">
-
-    <div class="letter">
-
-      <h2>Happiest Birthday, Chotu.</h2>
-
-      <p>
-        First of all, thanks for clicking this link and giving me access to your data.
-      </p>
-
-      <p>
-        I'm genuinely so grateful to have you in my life.
-        So don't kys, don't randomly turn into a cat,
-        and please continue being the absolute menace you are.
-      </p>
-
-      <p>
-        You're already blessed to have greatness like me around you,
-        obviously.
-      </p>
-
-      <p>
-        But seriously — I hope this year gives you everything you deserve,
-        a ridiculous amount of happiness, and enough memories to make
-        this little website look outdated.
-      </p>
-
-      <p>
-        Stay goated. Stay weird.
-        And never forget that someone actually sat down
-        and made an entire website for you.
-      </p>
-
-      <div class="signature">
-        LOVE YOU, WEIRDO ♡
-      </div>
-
+    <div class="drag">
+      ← DRAG / SWIPE →
     </div>
 
-    <button class="next-btn" onclick="showPage('cake')">
-      NEXT →
-    </button>
+  </div>
 
-  </section>
+</section>
 
 
-  <!-- CAKE -->
-  <section id="cake" class="page cake-page">
+<!-- LETTER -->
+<section class="letter">
 
-    <div class="bunny">🐰</div>
+  <div class="paper">
 
-    <div class="eyebrow">
-      IMPORTANT BIRTHDAY BUSINESS
-    </div>
+    <span class="label">02 / THE LETTER</span>
 
-    <h2>Make a wish.</h2>
+    <div class="paper-flower">❀</div>
 
-    <div id="countdown">
-      3
-    </div>
+    <p class="date">
+      26 · 08 · 2026
+    </p>
 
-    <button class="blow-btn" onclick="startCountdown()">
-      BLOW THE CAKE 🎂
-    </button>
+    <p class="dear">
+      Dear Chotu,
+    </p>
 
-  </section>
-
-
-  <!-- END -->
-  <section id="final" class="page final-page">
-
-    <div>
-
-      <h2>
-        HAPPIEST<br>
-        BIRTHDAY<br>
-        WEIRDO.
-      </h2>
+    <div class="letter-text">
 
       <p>
-        LOVE YOU CHOTU ♡<br>
-        STAY GOATED.
+        Happiest Birthday, Chotu ♡
+      </p>
+
+      <p>
+        First of all, thank you for clicking this link
+        and willingly giving me access to your data.
+        Very brave of you. Very questionable decision,
+        but I appreciate it.
+      </p>
+
+      <p>
+        And genuinely, I'm so grateful to have you in my life.
+        I don't say it enough, but you're one of those people
+        who somehow makes everything more chaotic and more fun
+        at the exact same time.
+      </p>
+
+      <p>
+        So please don't kys, don't turn into a cat,
+        and definitely don't start acting like you're not
+        already blessed to have greatness like me in your life.
+      </p>
+
+      <p>
+        You've officially survived another year of being you,
+        which honestly deserves an award.
+      </p>
+
+      <p>
+        I hope this year gives you a million reasons to laugh,
+        a few ridiculous stories we'll talk about forever,
+        and absolutely zero character development because
+        you're already perfect enough as a weirdo.
+      </p>
+
+      <p>
+        Keep being you. Keep being annoying.
+        Keep being goated.
+      </p>
+
+      <p class="love">
+        I love you, Chotu.
+      </p>
+
+      <p>
+        Now go enjoy your birthday, twin. ♡
       </p>
 
     </div>
 
-  </section>
+    <p class="sign">
+      — your favourite person, obviously
+    </p>
+
+  </div>
+
+</section>
 
 
-  <script src="script.js"></script>
+<!-- CAKE -->
+<section class="cake" id="cake">
+
+  <span class="label">
+    03 / MAKE A WISH
+  </span>
+
+  <div class="bunny" id="bunny">
+
+    <div class="ears">
+      <i></i>
+      <i></i>
+    </div>
+
+    <div class="face">
+      <span>•ᴗ•</span>
+    </div>
+
+  </div>
+
+
+  <div class="cake-art">
+
+    <div class="candles">
+      <i></i>
+      <i></i>
+      <i></i>
+    </div>
+
+    <div class="cake-top"></div>
+    <div class="cake-body"></div>
+
+  </div>
+
+
+  <h2 id="cakeText">
+    Chotu, blow out the candles.
+  </h2>
+
+  <button id="blow">
+    BLOW THE CANDLES
+  </button>
+
+  <div id="countdown"></div>
+
+</section>
+
+
+<!-- FINALE -->
+<section class="finale" id="finale">
+
+  <div id="poppers"></div>
+
+  <span class="label">
+    04 / THAT'S ALL
+  </span>
+
+  <h2>
+    Happiest Birthday<br>
+    <em>Weirdo.</em>
+  </h2>
+
+  <p>
+    stay goated, twin. ♡
+  </p>
+
+  <button id="musicToggle">
+    ♫ <span>play Harvey</span>
+  </button>
+
+  <p class="end">
+    I love you. · The End.
+  </p>
+
+</section>
+
+
+<!-- MUSIC -->
+<audio
+  id="music"
+  src="harvey.mp3"
+  preload="auto">
+</audio>
+
+<div class="music-pill" id="pill">
+  ♫ HARVEY · OFF
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
