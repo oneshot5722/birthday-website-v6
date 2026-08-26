@@ -1,4 +1,618 @@
-const music=document.getElementById("music"),pill=document.getElementById("pill"),toggle=document.getElementById("musicToggle");let playing=false;function musicToggle(){if(music.paused){music.play().then(()=>{playing=true;pill.textContent="♫ HARVEY · ON";toggle.innerHTML="♫ <span>pause Harvey</span>"})}else{music.pause();playing=false;pill.textContent="♫ HARVEY · OFF";toggle.innerHTML="♫ <span>play Harvey</span>"}}document.getElementById("start").onclick=()=>{document.getElementById("memories").scrollIntoView({behavior:"smooth"});musicToggle()};toggle.onclick=musicToggle;pill.onclick=musicToggle;
-const roll=document.getElementById("roll");let down=false,sx=0;roll.addEventListener("pointerdown",e=>{down=true;sx=e.clientX;roll.style.animationPlayState="paused"});roll.addEventListener("pointermove",e=>{if(down){let d=e.clientX-sx;roll.style.transform=`translateX(${d}px)`}});roll.addEventListener("pointerup",()=>down=false);
-document.getElementById("blow").onclick=()=>{const cake=document.querySelector(".cake"),cd=document.getElementById("countdown");cake.classList.add("blowing");let n=3;cd.textContent=n;const t=setInterval(()=>{n--;if(n>0)cd.textContent=n;else{clearInterval(t);cd.textContent="";setTimeout(()=>{cake.style.display="none";document.getElementById("finale").scrollIntoView();poppers()},500)}},700)};
-function poppers(){const box=document.getElementById("poppers");for(let i=0;i<100;i++){let p=document.createElement("i");p.className="pop";p.style.left=(45+Math.random()*10)+"%";p.style.top="45%";p.style.background=["#b76e67","#e8c9b5","#fff","#d7b98c"][i%4];p.style.setProperty("--x",(Math.random()*1000-500)+"px");p.style.setProperty("--y",(Math.random()*700-350)+"px");p.style.transform=`rotate(${Math.random()*360}deg)`;p.style.animationDelay=Math.random()*.3+"s";box.appendChild(p)}}function petal(){let p=document.createElement("i");p.textContent=["✿","❀","♡"][Math.floor(Math.random()*3)];p.style.left=Math.random()*100+"vw";p.style.setProperty("--x",(Math.random()*180-90)+"px");p.style.animationDuration=5+Math.random()*5+"s";document.getElementById("petals").appendChild(p);setTimeout(()=>p.remove(),11000)}setInterval(petal,1000);
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f1e7dc;
+  color: #29221f;
+  font-family: "DM Sans", sans-serif;
+}
+
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+  animation: grain 0.2s steps(2) infinite;
+}
+
+@keyframes grain {
+  50% {
+    transform: translate(2%, -2%);
+  }
+}
+
+/* ---------- GENERAL ---------- */
+
+.tiny,
+.label,
+.roll-title,
+.drag {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: #85776e;
+  text-transform: uppercase;
+}
+
+.label {
+  display: inline-block;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ---------- HERO ---------- */
+
+.hero {
+  height: 100vh;
+  min-height: 650px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #f7f0e8, #e8dbce);
+}
+
+.hero-center {
+  z-index: 2;
+}
+
+.hero .top {
+  position: absolute;
+  top: 30px;
+}
+
+.hero .bottom {
+  position: absolute;
+  bottom: 25px;
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8b7b71;
+}
+
+.hero h1 {
+  font: 500 clamp(70px, 12vw, 155px) / 0.8 "Cormorant Garamond";
+  letter-spacing: -0.05em;
+  margin: 22px 0;
+}
+
+.hero h1 em,
+.head h2 em,
+.finale h2 em {
+  font-family: "Parisienne";
+  color: #b76e67;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.sub {
+  font: 23px / 1.1 "Cormorant Garamond";
+  color: #6d5e55;
+}
+
+.hero button,
+.cake button {
+  border: 1px solid #29221f;
+  background: transparent;
+  border-radius: 30px;
+  padding: 14px 20px;
+  margin-top: 18px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.hero button:hover,
+.cake button:hover {
+  background: #29221f;
+  color: #fff;
+}
+
+.flower {
+  position: absolute;
+  color: #b76e67;
+  font-size: 70px;
+  opacity: 0.55;
+  animation: float 5s ease-in-out infinite;
+}
+
+.f1 {
+  left: 8%;
+  top: 18%;
+}
+
+.f2 {
+  right: 8%;
+  bottom: 18%;
+  animation-delay: -2s;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-16px) rotate(8deg);
+  }
+}
+
+/* ---------- MEMORIES ---------- */
+
+.memories {
+  min-height: 100vh;
+  padding: 120px 0 90px;
+  background: #eee2d6;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 30px;
+  align-items: end;
+  padding: 0 8vw;
+}
+
+.head h2 {
+  font: 500 clamp(65px, 10vw, 130px) / 0.78 "Cormorant Garamond";
+  letter-spacing: -0.05em;
+  margin: 45px 0;
+}
+
+.head p {
+  font: 18px / 1.1 "Cormorant Garamond";
+  color: #7b6d64;
+  max-width: 250px;
+}
+
+.roll-area {
+  overflow: hidden;
+  margin-top: 30px;
+}
+
+.roll-title {
+  padding: 0 8vw 15px;
+}
+
+.roll {
+  display: flex;
+  gap: 28px;
+  width: max-content;
+  padding: 15px 8vw 40px;
+  animation: camera 35s linear infinite;
+  cursor: grab;
+}
+
+.roll:active {
+  cursor: grabbing;
+}
+
+.roll:hover {
+  animation-play-state: paused;
+}
+
+.roll figure {
+  width: 205px;
+  margin: 0;
+  background: #fff;
+  padding: 10px 10px 34px;
+  box-shadow: 0 18px 35px #4d3c3022;
+  transform: rotate(-2deg);
+  flex: none;
+  transition: transform 0.35s ease;
+}
+
+.roll figure:hover {
+  transform: translateY(-12px) rotate(0deg);
+}
+
+.roll figure:nth-child(even) {
+  transform: rotate(3deg) translateY(22px);
+}
+
+.roll figure:nth-child(even):hover {
+  transform: translateY(10px) rotate(0deg);
+}
+
+.roll img {
+  display: block;
+  width: 100%;
+  height: 245px;
+  object-fit: cover;
+}
+
+.roll figcaption {
+  font: 20px "Parisienne";
+  color: #554940;
+  margin-top: 9px;
+}
+
+@keyframes camera {
+  to {
+    transform: translateX(-750px);
+  }
+}
+
+.drag {
+  text-align: center;
+}
+
+/* ---------- LETTER ---------- */
+
+.letter {
+  min-height: 100vh;
+  padding: 100px 20px;
+  display: grid;
+  place-items: center;
+  background: #e1d0be;
+}
+
+.paper {
+  width: min(760px, 92vw);
+  min-height: 650px;
+  background: #fbf6ed;
+  padding: 65px clamp(30px, 8vw, 95px);
+  box-shadow: 0 30px 70px #49382a22;
+  transform: rotate(-0.6deg);
+  position: relative;
+}
+
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid #d9c8b6;
+  pointer-events: none;
+}
+
+.paper-flower {
+  position: absolute;
+  right: 30px;
+  top: 25px;
+  color: #b76e67;
+  font-size: 42px;
+}
+
+.date {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #8a7b71;
+}
+
+.dear {
+  font: 38px "Parisienne";
+  margin-top: 60px;
+}
+
+.letter-text {
+  font: 21px / 1.4 "Cormorant Garamond";
+  color: #544940;
+}
+
+.letter-text p {
+  margin: 0 0 18px;
+}
+
+.love {
+  font-size: 42px !important;
+  font-family: "Parisienne" !important;
+  color: #b76e67;
+}
+
+.sign {
+  font: 28px "Parisienne";
+  margin-top: 50px;
+}
+
+/* ---------- BUNNY / CAKE ---------- */
+
+.cake {
+  min-height: 100vh;
+  padding: 100px 20px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  background: #f5eee5;
+  position: relative;
+  overflow: hidden;
+}
+
+.cake h2 {
+  font: 500 clamp(45px, 7vw, 90px) / 0.85 "Cormorant Garamond";
+  margin: 35px 0;
+}
+
+.bunny {
+  width: 110px;
+  height: 100px;
+  position: relative;
+  animation: bunnyBounce 2s ease-in-out infinite;
+}
+
+@keyframes bunnyBounce {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.ears {
+  display: flex;
+  justify-content: space-around;
+}
+
+.ears i {
+  width: 27px;
+  height: 58px;
+  border-radius: 50%;
+  background: #f2d9d3;
+  display: block;
+  border: 2px solid #b99b94;
+}
+
+.face {
+  width: 90px;
+  height: 75px;
+  background: #f2d9d3;
+  border-radius: 48% 48% 45% 45%;
+  position: absolute;
+  left: 10px;
+  top: 35px;
+  display: grid;
+  place-items: center;
+}
+
+.face span {
+  font: 23px Arial;
+  color: #5a4a46;
+}
+
+.cake-art {
+  position: relative;
+  width: 150px;
+  height: 105px;
+}
+
+.cake-body {
+  position: absolute;
+  bottom: 0;
+  width: 150px;
+  height: 65px;
+  border-radius: 10px 10px 25px 25px;
+  background: #e9c7bc;
+}
+
+.cake-top {
+  position: absolute;
+  top: 25px;
+  width: 150px;
+  height: 35px;
+  border-radius: 50%;
+  background: #fff2e8;
+  border: 2px solid #d7aaa0;
+}
+
+.candles {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 27px;
+  right: 27px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.candles i {
+  width: 5px;
+  height: 32px;
+  background: #b76e67;
+  position: relative;
+}
+
+.candles i::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  border-radius: 50%;
+  background: #f0ad54;
+  top: -12px;
+  left: -1.5px;
+  animation: flicker 0.4s infinite alternate;
+}
+
+@keyframes flicker {
+  to {
+    transform: scale(0.75) translateY(2px);
+  }
+}
+
+#countdown {
+  position: absolute;
+  font: 120px "Cormorant Garamond";
+  color: #b76e67;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cake.blowing .candles i::after {
+  display: none;
+}
+
+.cake.blowing #countdown {
+  opacity: 1;
+}
+
+/* ---------- FINALE ---------- */
+
+.finale {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  background: #171214;
+  color: #f4e9dd;
+  position: relative;
+  overflow: hidden;
+}
+
+.finale h2 {
+  font: 500 clamp(75px, 12vw, 150px) / 0.75 "Cormorant Garamond";
+  margin: 40px 0;
+}
+
+.finale p {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.finale .end {
+  position: absolute;
+  bottom: 35px;
+  font-size: 9px;
+  color: #8f7e80;
+}
+
+.finale button {
+  border: 1px solid #f4e9dd;
+  background: transparent;
+  color: #f4e9dd;
+  border-radius: 30px;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.finale button:hover {
+  background: #f4e9dd;
+  color: #171214;
+}
+
+/* ---------- MUSIC ---------- */
+
+.music-pill {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  background: #29221f;
+  color: #fff;
+  padding: 11px 15px;
+  border-radius: 30px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  z-index: 30;
+  cursor: pointer;
+  box-shadow: 0 8px 25px #0003;
+}
+
+/* ---------- FLOWERS ---------- */
+
+#petals i {
+  position: fixed;
+  top: -20px;
+  color: #b76e67;
+  z-index: 10;
+  animation: fall 6s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform:
+      translate(var(--x), 110vh)
+      rotate(500deg);
+    opacity: 0;
+  }
+}
+
+/* ---------- POPPERS ---------- */
+
+.pop {
+  position: absolute;
+  width: 8px;
+  height: 18px;
+  animation: pop 1.5s forwards;
+}
+
+@keyframes pop {
+  to {
+    transform:
+      translate(var(--x), var(--y))
+      rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 750px) {
+
+  .hero {
+    min-height: 600px;
+  }
+
+  .hero h1 {
+    font-size: clamp(65px, 19vw, 100px);
+  }
+
+  .sub {
+    font-size: 20px;
+  }
+
+  .head {
+    display: block;
+    padding: 0 7vw;
+  }
+
+  .head h2 {
+    margin: 40px 0 25px;
+  }
+
+  .head p {
+    margin-top: 10px;
+  }
+
+  .roll {
+    padding-left: 7vw;
+    gap: 20px;
+  }
+
+  .roll figure {
+    width: 180px;
+  }
+
+  .roll img {
+    height: 220px;
+  }
+
+  .paper {
+    padding: 45px 28px;
+  }
+
+  .letter-text {
+    font-size: 19px;
+  }
+
+  .love {
+    font-size: 35px !important;
+  }
+
+  .finale h2 {
+    font-size: clamp(65px, 18vw, 110px);
+  }
+
+  .flower {
+    font-size: 48px;
+  }
+}
