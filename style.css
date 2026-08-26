@@ -5,13 +5,13 @@
 }
 
 :root {
-  --paper: #f3eadf;
-  --paper-2: #e7d8c9;
-  --ink: #211b19;
-  --muted: #85766c;
-  --rose: #b96e68;
-  --rose-light: #d9a49b;
-  --dark: #100c0d;
+  --paper: #f3e8dc;
+  --paper-dark: #dfcdbd;
+  --ink: #211918;
+  --muted: #87766d;
+  --rose: #b86d67;
+  --rose-light: #d9a29a;
+  --night: #120d0f;
 }
 
 html {
@@ -32,8 +32,8 @@ button {
 }
 
 img {
-  max-width: 100%;
   display: block;
+  width: 100%;
 }
 
 ::selection {
@@ -42,9 +42,9 @@ img {
 }
 
 
-/* =========================================================
+/* =====================================================
    GRAIN
-========================================================= */
+===================================================== */
 
 .grain {
   position: fixed;
@@ -52,188 +52,329 @@ img {
   z-index: 999;
   pointer-events: none;
   opacity: .055;
+
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+
   animation: grain .18s steps(2) infinite;
 }
 
 @keyframes grain {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(2%, -1%); }
-  50% { transform: translate(-1%, 2%); }
-  75% { transform: translate(1%, 1%); }
-  100% { transform: translate(-2%, -1%); }
+  0% { transform: translate(0,0); }
+  25% { transform: translate(2%,-1%); }
+  50% { transform: translate(-1%,2%); }
+  75% { transform: translate(1%,1%); }
+  100% { transform: translate(-2%,-1%); }
 }
 
 
-/* =========================================================
+/* =====================================================
    CURSOR
-========================================================= */
+===================================================== */
 
 .cursor,
-.cursor-trail {
+.cursor-ring {
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 2000;
   pointer-events: none;
-  z-index: 1001;
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
 
 .cursor {
-  width: 8px;
-  height: 8px;
-  background: #211b19;
-  transition:
-    width .25s ease,
-    height .25s ease,
-    background .25s ease;
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
 }
 
-.cursor-trail {
+.cursor-ring {
   width: 34px;
   height: 34px;
-  border: 1px solid #211b1966;
-  transition: transform .12s ease;
+  border: 1px solid #21191855;
+  transition:
+    width .25s,
+    height .25s,
+    border-color .25s;
 }
 
-body.cursor-hover .cursor {
-  width: 18px;
-  height: 18px;
+body.hovering .cursor {
+  width: 15px;
+  height: 15px;
   background: var(--rose);
 }
 
-body.cursor-hover .cursor-trail {
-  width: 58px;
-  height: 58px;
+body.hovering .cursor-ring {
+  width: 55px;
+  height: 55px;
   border-color: var(--rose);
 }
 
 
-/* =========================================================
+/* =====================================================
    LOADER
-========================================================= */
+===================================================== */
 
 #loader {
   position: fixed;
   inset: 0;
-  z-index: 2000;
-  background: #171113;
-  color: #f4e9dd;
+  z-index: 3000;
+
   display: grid;
   place-items: center;
+
+  background: #171012;
+  color: #f3e8dc;
+
   transition:
     opacity 1s cubic-bezier(.77,0,.18,1),
     visibility 1s;
 }
 
-#loader.hide {
+#loader.hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-.loader-inner {
-  width: min(360px, 70vw);
+.loader-content {
+  width: min(360px, 75vw);
   text-align: center;
 }
 
+.loader-edition {
+  font-size: 8px;
+  letter-spacing: .35em;
+  color: #a99892;
+  margin-bottom: 15px;
+}
+
 .loader-number {
-  font: 110px/1 "Cormorant Garamond";
-  letter-spacing: -.07em;
+  font: 120px/.8 "Cormorant Garamond";
+  letter-spacing: -.08em;
 }
 
-.loader-line {
-  width: 100%;
+.loader-bar {
   height: 1px;
-  background: #ffffff20;
-  margin: 20px 0;
-  overflow: hidden;
+  background: #ffffff22;
+  margin: 25px 0;
 }
 
-.loader-line span {
+.loader-bar span {
   display: block;
   width: 0;
   height: 100%;
-  background: #f4e9dd;
-  transition: width .2s linear;
+  background: #f3e8dc;
 }
 
-.loader-inner p {
-  font-size: 9px;
-  letter-spacing: .22em;
+.loader-content p {
+  font-size: 8px;
+  letter-spacing: .2em;
   text-transform: uppercase;
-  color: #a89996;
+  color: #9c8983;
 }
 
 
-/* =========================================================
-   MUSIC
-========================================================= */
+/* =====================================================
+   AMBIENT BACKGROUND
+===================================================== */
 
-.music-control {
+.ambient {
   position: fixed;
-  right: 25px;
+  z-index: -4;
+
+  width: 50vw;
+  height: 50vw;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  pointer-events: none;
+
+  opacity: .28;
+}
+
+.ambient-one {
+  top: -20vw;
+  left: -10vw;
+  background: #d99e98;
+
+  animation: ambientOne 15s ease-in-out infinite alternate;
+}
+
+.ambient-two {
+  right: -20vw;
+  bottom: -15vw;
+  background: #c6a6c4;
+
+  animation: ambientTwo 19s ease-in-out infinite alternate;
+}
+
+@keyframes ambientOne {
+  to {
+    transform:
+      translate(20vw, 15vh)
+      scale(1.3);
+  }
+}
+
+@keyframes ambientTwo {
+  to {
+    transform:
+      translate(-15vw, -20vh)
+      scale(1.4);
+  }
+}
+
+
+/* =====================================================
+   FLOATING LIMITED EDITION DIAMOND
+===================================================== */
+
+.diamond {
+  position: fixed;
+
+  right: 7vw;
+  bottom: 10vh;
+
+  z-index: 4;
+
+  width: 125px;
+  height: 125px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #21191820;
+
+  transform: rotate(45deg);
+
+  opacity: .42;
+
+  pointer-events: none;
+
+  animation: diamondFloat 7s ease-in-out infinite;
+}
+
+.diamond::before {
+  content: "";
+
+  position: absolute;
+  inset: 10px;
+
+  border: 1px solid #b86d6744;
+}
+
+.diamond span,
+.diamond strong {
+  transform: rotate(-45deg);
+}
+
+.diamond span {
+  font-size: 6px;
+  letter-spacing: .25em;
+}
+
+.diamond strong {
+  margin: 5px 0;
+
+  font: 22px "Cormorant Garamond";
+
+  color: var(--rose);
+}
+
+@keyframes diamondFloat {
+  0%,100% {
+    transform: rotate(45deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(52deg) translateY(-18px);
+  }
+}
+
+
+/* =====================================================
+   MUSIC PLAYER
+===================================================== */
+
+.music-button {
+  position: fixed;
+
   top: 24px;
+  right: 25px;
+
   z-index: 1000;
 
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
 
-  padding: 10px 14px;
+  padding: 11px 15px;
 
-  border: 1px solid #211b1940;
+  border: 1px solid #21191840;
   border-radius: 100px;
 
-  background: #f3eadfdd;
-  backdrop-filter: blur(12px);
+  background: #f3e8dccc;
+
+  backdrop-filter: blur(15px);
 
   color: var(--ink);
-  font-size: 9px;
-  letter-spacing: .15em;
 
-  transition: .35s ease;
+  font-size: 8px;
+  letter-spacing: .18em;
+
+  transition:
+    background .35s,
+    color .35s,
+    transform .35s;
 }
 
-.music-control:hover {
+.music-button:hover {
   background: var(--ink);
   color: white;
   transform: translateY(-2px);
 }
 
-.music-icon {
-  font-size: 15px;
+.music-symbol {
+  font-size: 16px;
+}
+
+.music-button.playing .music-symbol {
+  animation: musicPulse .7s ease-in-out infinite alternate;
+}
+
+@keyframes musicPulse {
+  to {
+    transform: scale(1.3) rotate(8deg);
+  }
 }
 
 
-/* =========================================================
-   GENERAL
-========================================================= */
+/* =====================================================
+   FULL SCREEN PAGES
+===================================================== */
 
-.section-number,
-.section-name {
-  font-size: 9px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.page {
+  min-height: 100svh;
+  width: 100%;
 
-.section-number {
-  margin-right: 15px;
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
   position: relative;
-  height: 100svh;
-  min-height: 700px;
+
   overflow: hidden;
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+.page-intro {
+  min-height: 100svh;
 
   display: grid;
   place-items: center;
@@ -244,111 +385,103 @@ body.cursor-hover .cursor-trail {
     radial-gradient(
       circle at 50% 50%,
       #fff8ef 0%,
-      #f3e6da 35%,
-      #ddcbbd 100%
+      #f3e5d9 40%,
+      #dcc7b7 100%
     );
+
+  isolation: isolate;
 }
 
-.hero::before {
+.page-intro::before {
   content: "";
-  position: absolute;
-  inset: 0;
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent 49.95%,
-      #211b1910 50%,
-      transparent 50.05%
-    );
+  position: absolute;
+  inset: 8%;
+
+  border: 1px solid #21191812;
 
   pointer-events: none;
 }
 
-.hero-meta {
+.page-intro::after {
+  content: "";
+
   position: absolute;
-  top: 28px;
+  inset: 15%;
+
+  border: 1px solid #2119180b;
+  border-radius: 50%;
+
+  animation: rotateRing 35s linear infinite;
+}
+
+@keyframes rotateRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.top-info,
+.bottom-info {
+  position: absolute;
+
   left: 7vw;
   right: 7vw;
 
   display: flex;
   justify-content: space-between;
 
-  font-size: 9px;
-  letter-spacing: .22em;
-  color: #76685f;
+  font-size: 8px;
+  letter-spacing: .25em;
+
+  color: #806f66;
 }
 
-.hero-content {
+.top-info {
+  top: 28px;
+}
+
+.bottom-info {
+  bottom: 28px;
+}
+
+.intro-center {
   position: relative;
   z-index: 5;
 }
 
-.hero-eyebrow {
-  margin-bottom: 30px;
+.tiny-label {
+  margin-bottom: 35px;
 
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: .3em;
-  text-transform: uppercase;
 
-  color: #887970;
-
-  opacity: 0;
-  transform: translateY(20px);
+  color: var(--muted);
 }
 
-.loaded .hero-eyebrow {
-  animation: rise 1s .2s forwards;
+.intro-center h1 {
+  font: 500 clamp(80px, 13vw, 180px)/.64 "Cormorant Garamond";
+
+  letter-spacing: -.07em;
 }
 
-.hero-title {
-  font: 500 clamp(80px, 13vw, 180px)/.67 "Cormorant Garamond";
-  letter-spacing: -.065em;
-}
-
-.title-line {
+.intro-center h1 em {
   display: block;
 
-  opacity: 0;
-  transform: translateY(100px) rotate(3deg);
+  font: 400 clamp(80px, 13vw, 180px)/.65 "Parisienne";
 
-  clip-path: inset(0 0 100% 0);
-}
-
-.loaded .title-line:nth-child(1) {
-  animation: titleReveal 1.2s .25s cubic-bezier(.16,1,.3,1) forwards;
-}
-
-.loaded .title-line:nth-child(2) {
-  animation: titleReveal 1.2s .42s cubic-bezier(.16,1,.3,1) forwards;
-}
-
-.loaded .title-line:nth-child(3) {
-  animation: titleReveal 1.2s .59s cubic-bezier(.16,1,.3,1) forwards;
-}
-
-.title-script {
-  font-family: "Parisienne";
-  font-weight: 400;
   color: var(--rose);
-  letter-spacing: 0;
 }
 
-.hero-subtitle {
+.intro-center p {
   margin-top: 45px;
 
   font: 20px/1.15 "Cormorant Garamond";
-  color: #76675f;
 
-  opacity: 0;
-  transform: translateY(20px);
+  color: #76675e;
 }
 
-.loaded .hero-subtitle {
-  animation: rise 1s 1s forwards;
-}
-
-.hero-button {
+.main-button {
   position: relative;
 
   margin-top: 30px;
@@ -362,21 +495,15 @@ body.cursor-hover .cursor-trail {
 
   color: var(--ink);
 
-  font-size: 9px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
+  font-size: 8px;
+  letter-spacing: .25em;
 
   overflow: hidden;
 
-  opacity: 0;
+  transition: color .4s;
 }
 
-.loaded .hero-button {
-  animation:
-    rise 1s 1.2s forwards;
-}
-
-.hero-button::before {
+.main-button::before {
   content: "";
 
   position: absolute;
@@ -389,250 +516,128 @@ body.cursor-hover .cursor-trail {
   transition: transform .45s cubic-bezier(.77,0,.18,1);
 }
 
-.hero-button span,
-.hero-button b {
+.main-button:hover {
+  color: white;
+}
+
+.main-button:hover::before {
+  transform: translateY(0);
+}
+
+.main-button span,
+.main-button b {
   position: relative;
   z-index: 2;
 }
 
-.hero-button b {
+.main-button b {
   margin-left: 12px;
-  font-weight: 400;
+  font-weight: normal;
 }
 
-.hero-button:hover {
-  color: white;
-}
-
-.hero-button:hover::before {
-  transform: translateY(0);
-}
-
-.hero-bottom {
-  position: absolute;
-  bottom: 27px;
-
+.scroll-hint {
   display: flex;
   align-items: center;
   gap: 12px;
-
-  font-size: 8px;
-  letter-spacing: .25em;
-  color: #776960;
 }
 
-.scroll-line {
-  width: 70px;
+.scroll-hint i {
+  display: block;
+
+  width: 60px;
   height: 1px;
-  background: #211b1928;
+
+  background: #21191830;
+
   overflow: hidden;
 }
 
-.scroll-line span {
+.scroll-hint i::after {
+  content: "";
+
   display: block;
-  width: 30%;
+
+  width: 25%;
   height: 100%;
+
   background: var(--rose);
 
-  animation: scrollLine 2s infinite;
+  animation: scrollMove 2s infinite;
 }
 
-@keyframes scrollLine {
-  0% { transform: translateX(-120%); }
-  100% { transform: translateX(400%); }
-}
+@keyframes scrollMove {
+  from {
+    transform: translateX(-100%);
+  }
 
-.hero-orbit {
-  position: absolute;
-
-  border: 1px solid #211b1912;
-  border-radius: 50%;
-
-  pointer-events: none;
-}
-
-.orbit-one {
-  width: 55vw;
-  height: 55vw;
-
-  animation: orbit 30s linear infinite;
-}
-
-.orbit-two {
-  width: 78vw;
-  height: 78vw;
-
-  animation: orbit 45s linear infinite reverse;
-}
-
-@keyframes orbit {
   to {
-    transform: rotate(360deg);
-  }
-}
-
-.hero-flower {
-  position: absolute;
-
-  font-size: clamp(50px, 7vw, 100px);
-
-  color: var(--rose);
-
-  opacity: .35;
-
-  pointer-events: none;
-}
-
-.flower-a {
-  left: 8%;
-  top: 22%;
-
-  animation: float 5s ease-in-out infinite;
-}
-
-.flower-b {
-  right: 8%;
-  bottom: 23%;
-
-  animation: float 6s 1s ease-in-out infinite reverse;
-}
-
-@keyframes float {
-  50% {
-    transform: translateY(-18px) rotate(8deg);
+    transform: translateX(400%);
   }
 }
 
 
-/* =========================================================
-   INTRO
-========================================================= */
-
-.intro-section {
-  position: relative;
-  min-height: 100vh;
-
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-
-  padding: 14vw 8vw;
-
-  background: #eee1d5;
-}
-
-.intro-left {
-  display: flex;
-  align-items: flex-start;
-  padding-top: 12px;
-}
-
-.intro-main {
-  max-width: 950px;
-}
-
-.reveal-text {
-  margin-bottom: 30px;
-
-  font-size: 10px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-
-  color: var(--rose);
-}
-
-.reveal-heading {
-  max-width: 900px;
-
-  font: 500 clamp(55px, 8vw, 115px)/.83 "Cormorant Garamond";
-
-  letter-spacing: -.05em;
-}
-
-.reveal-heading span {
-  font-family: "Parisienne";
-  color: var(--rose);
-  font-weight: 400;
-}
-
-.intro-copy {
-  max-width: 330px;
-  margin-top: 55px;
-
-  font: 22px/1.1 "Cormorant Garamond";
-  color: #75675f;
-}
-
-.scroll-message {
-  margin-top: 100px;
-
-  display: flex;
-  align-items: center;
-  gap: 20px;
-
-  font-size: 8px;
-  letter-spacing: .2em;
-  color: #85766c;
-}
-
-.scroll-message .arrow {
-  font-size: 22px;
-  animation: arrowDown 1.6s infinite;
-}
-
-@keyframes arrowDown {
-  50% {
-    transform: translateY(8px);
-  }
-}
-
-
-/* =========================================================
+/* =====================================================
    ARCHIVE
-========================================================= */
+===================================================== */
 
-.archive-section {
-  min-height: 100vh;
-  padding: 12vw 0 8vw;
-  overflow: hidden;
+.archive-page {
+  padding: 12vw 0 7vw;
 
   background:
     radial-gradient(
-      circle at 70% 40%,
-      #fff8ee,
-      transparent 35%
+      circle at 70% 35%,
+      #fff9f1,
+      transparent 32%
     ),
-    #f3e9de;
+    #eee0d3;
 }
 
-.archive-header {
+.page-header {
   padding: 0 8vw;
 
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: end;
-  gap: 30px;
 }
 
-.archive-title {
-  font: 500 clamp(70px, 11vw, 150px)/.7 "Cormorant Garamond";
-  letter-spacing: -.07em;
+.page-header div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.archive-title span {
-  font-family: "Parisienne";
-  color: var(--rose);
-}
-
-.archive-title strong {
-  font-weight: 500;
-}
-
-.archive-header p {
-  font: 20px "Cormorant Garamond";
+.page-header small,
+.page-header span {
+  font-size: 8px;
+  letter-spacing: .22em;
   color: var(--muted);
 }
 
-.camera-wrap {
+.page-header p {
+  font: 22px "Parisienne";
+  color: var(--rose);
+}
+
+.archive-heading {
+  padding: 0 8vw;
+
+  margin-top: 50px;
+
+  font: 500 clamp(70px, 11vw, 155px)/.65 "Cormorant Garamond";
+
+  letter-spacing: -.07em;
+}
+
+.archive-heading span {
+  display: block;
+}
+
+.archive-heading strong {
+  font: 400 clamp(80px, 13vw, 180px)/.7 "Parisienne";
+  color: var(--rose);
+}
+
+.camera-window {
   margin-top: 80px;
 
   overflow: hidden;
@@ -641,7 +646,7 @@ body.cursor-hover .cursor-trail {
   touch-action: pan-y;
 }
 
-.camera-wrap:active {
+.camera-window:active {
   cursor: grabbing;
 }
 
@@ -649,178 +654,161 @@ body.cursor-hover .cursor-trail {
   width: max-content;
 
   display: flex;
-  align-items: center;
-  gap: 35px;
+  gap: 28px;
 
-  padding: 30px 8vw;
+  padding: 20px 8vw;
 
-  will-change: transform;
-
-  animation: automaticRoll 45s linear infinite;
+  animation: cameraMove 45s linear infinite;
 }
 
-.camera-wrap:hover .camera-track {
+.camera-window:hover .camera-track {
   animation-play-state: paused;
 }
 
-@keyframes automaticRoll {
+@keyframes cameraMove {
   to {
-    transform: translateX(-1050px);
+    transform: translateX(-1000px);
   }
 }
 
-.memory-card {
+.photo-card {
   position: relative;
 
-  width: clamp(210px, 22vw, 330px);
-
-  padding: 13px 13px 35px;
+  width: clamp(210px, 23vw, 330px);
 
   flex-shrink: 0;
+
+  padding: 12px 12px 30px;
 
   background: #fff;
 
   box-shadow:
-    0 25px 60px #3c2b211a,
-    0 3px 10px #3c2b2112;
+    0 30px 70px #33241d20;
 
   transform: rotate(-2deg);
 
   transition:
-    transform .5s cubic-bezier(.16,1,.3,1),
+    transform .5s,
     box-shadow .5s;
 }
 
-.memory-card:nth-child(2n) {
-  transform: rotate(2.7deg) translateY(28px);
+.photo-card:nth-child(even) {
+  transform: rotate(2deg) translateY(25px);
 }
 
-.memory-card:nth-child(3n) {
+.photo-card:nth-child(3n) {
   transform: rotate(-1deg) translateY(-20px);
 }
 
-.memory-card:hover {
-  z-index: 5;
+.photo-card:hover {
+  z-index: 10;
 
   transform:
-    translateY(-25px)
-    rotate(0deg)
+    translateY(-20px)
+    rotate(0)
     scale(1.04);
 
   box-shadow:
-    0 45px 80px #3c2b2130,
-    0 5px 20px #3c2b2120;
+    0 45px 90px #33241d30;
 }
 
-.memory-card img {
-  width: 100%;
-  height: clamp(260px, 30vw, 420px);
+.photo-card img {
+  height: clamp(270px, 31vw, 430px);
 
   object-fit: cover;
 
-  filter: saturate(.82) contrast(.95);
+  filter: saturate(.8);
 
   transition: filter .5s;
 }
 
-.memory-card:hover img {
-  filter: saturate(1) contrast(1);
+.photo-card:hover img {
+  filter: saturate(1);
 }
 
-.card-number {
+.photo-card .year {
   position: absolute;
 
-  right: 18px;
   top: 20px;
+  right: 20px;
 
-  z-index: 2;
+  z-index: 3;
 
-  width: 32px;
-  height: 32px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 50%;
+  padding: 8px 10px;
 
   background: white;
 
-  font-size: 8px;
-  letter-spacing: .1em;
-}
-
-.card-caption {
-  padding: 14px 4px 0;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.card-caption span {
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: .15em;
-  color: #998980;
 }
 
-.card-caption strong {
-  font: 23px "Parisienne";
-  color: #584b44;
+.photo-card small {
+  display: block;
+
+  padding-top: 13px;
+
+  font: 22px "Parisienne";
+
+  color: #62544c;
 }
 
-.camera-footer {
-  margin: 45px 8vw 0;
+.archive-footer {
+  margin: 40px 8vw 0;
 
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
 
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: .2em;
-  color: #887970;
+  color: var(--muted);
 }
 
-.camera-footer div {
+.archive-footer div {
   width: 70px;
   height: 1px;
-  background: #211b1925;
+  background: #21191830;
 }
 
 
-/* =========================================================
+/* =====================================================
    LETTER
-========================================================= */
+===================================================== */
 
-.letter-section {
+.letter-page {
   min-height: 120vh;
-
-  position: relative;
 
   display: grid;
   place-items: center;
 
-  padding: 13vw 20px;
+  padding: 12vw 20px;
 
-  background: #d8c5b4;
-
-  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      #eed5ca,
+      transparent 30%
+    ),
+    #d5c1b0;
 }
 
-.letter-background-word {
+.letter-page::before {
+  content: "YOU";
+
   position: absolute;
 
   font: 35vw/.7 "Cormorant Garamond";
 
-  color: #ffffff14;
+  color: #ffffff12;
 
   pointer-events: none;
 }
 
-.letter {
-  width: min(780px, 92vw);
-
+.letter-paper {
   position: relative;
+
+  width: min(780px, 92vw);
 
   padding: clamp(45px, 7vw, 90px);
 
@@ -828,89 +816,86 @@ body.cursor-hover .cursor-trail {
     linear-gradient(
       135deg,
       #fffaf1,
-      #f4eadc
+      #f1e5d7
     );
 
   box-shadow:
-    0 50px 100px #38291f25,
-    0 2px 5px #38291f20;
+    0 55px 100px #34251d25;
 
-  transform: rotate(-.7deg);
+  transform: rotate(-.6deg);
 }
 
-.letter::before {
+.letter-paper::before {
   content: "";
 
   position: absolute;
-  inset: 16px;
+  inset: 15px;
 
-  border: 1px solid #cbb9a766;
-
-  pointer-events: none;
+  border: 1px solid #bca99c66;
 }
 
 .letter-top {
   display: flex;
   justify-content: space-between;
 
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: .2em;
 
-  color: #94857b;
+  color: #8c7b72;
 }
 
 .letter-date {
-  margin-top: 50px;
+  margin-top: 45px;
 
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: .2em;
 
   color: var(--rose);
 }
 
-.letter h2 {
-  margin-top: 45px;
+.letter-paper h2 {
+  margin-top: 40px;
 
-  font: 500 clamp(55px, 7vw, 90px)/.75 "Cormorant Garamond";
+  font: 500 clamp(60px, 8vw, 100px)/.7 "Cormorant Garamond";
 
   letter-spacing: -.06em;
 }
 
-.letter h2 span {
-  font-family: "Parisienne";
+.letter-paper h2 em {
+  font: 400 clamp(65px, 8vw, 105px)/.7 "Parisienne";
+
   color: var(--rose);
-  font-weight: 400;
 }
 
-.letter-body {
+.letter-text {
   margin-top: 45px;
 
-  font: 21px/1.45 "Cormorant Garamond";
+  font: 20px/1.45 "Cormorant Garamond";
 
-  color: #5e5149;
+  color: #5c4e46;
 }
 
-.letter-body p {
+.letter-text p {
   margin-bottom: 20px;
 }
 
-.letter-love {
-  margin: 35px 0 !important;
+.letter-text .love {
+  margin: 35px 0;
 
-  font: 50px "Parisienne";
+  font: 48px "Parisienne";
 
   color: var(--rose);
 }
 
-.letter-sign {
-  margin-top: 50px;
+.signature {
+  margin-top: 40px;
 
-  font: 27px "Parisienne";
+  font: 26px "Parisienne";
 
-  color: #64554d;
+  color: #66574e;
 }
 
-.letter-stamp {
+.stamp {
   position: absolute;
 
   right: 45px;
@@ -922,7 +907,7 @@ body.cursor-hover .cursor-trail {
   display: grid;
   place-items: center;
 
-  border: 1px solid #b76e6766;
+  border: 1px solid #b86d6766;
   border-radius: 50%;
 
   color: var(--rose);
@@ -931,43 +916,37 @@ body.cursor-hover .cursor-trail {
 }
 
 
-/* =========================================================
-   WISH
-========================================================= */
+/* =====================================================
+   WISH PAGE
+===================================================== */
 
-.wish-section {
-  min-height: 100vh;
-
-  position: relative;
+.wish-page {
+  min-height: 100svh;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
   text-align: center;
 
-  padding: 100px 20px;
-
-  overflow: hidden;
-
   background:
     radial-gradient(
-      circle at 50% 50%,
+      circle at center,
       #fff8ef,
-      #eee0d2 70%
+      #ead9cb 75%
     );
 }
 
-.wish-top {
+.wish-number {
   position: absolute;
 
   top: 30px;
 
   font-size: 8px;
-  letter-spacing: .2em;
+  letter-spacing: .25em;
 
-  color: #8a7a70;
+  color: var(--muted);
 }
 
 .bunny {
@@ -976,123 +955,119 @@ body.cursor-hover .cursor-trail {
   width: 125px;
   height: 135px;
 
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 
   animation: bunnyFloat 2.5s ease-in-out infinite;
 }
 
 @keyframes bunnyFloat {
   50% {
-    transform: translateY(-10px) rotate(1deg);
+    transform: translateY(-10px) rotate(2deg);
   }
 }
 
-.bunny-ear {
+.ear {
   position: absolute;
 
   top: 0;
 
   width: 35px;
-  height: 75px;
+  height: 78px;
+
+  border: 2px solid #b9928b;
+
+  background: #efd6d0;
 
   border-radius: 60%;
-
-  border: 2px solid #b9948e;
-
-  background: #f0d8d2;
 }
 
-.bunny-ear.left {
-  left: 22px;
+.ear-left {
+  left: 20px;
   transform: rotate(-10deg);
 }
 
-.bunny-ear.right {
-  right: 22px;
+.ear-right {
+  right: 20px;
   transform: rotate(10deg);
 }
 
-.bunny-face {
+.bunny-head {
   position: absolute;
 
+  left: 6px;
   bottom: 0;
-  left: 7px;
 
-  width: 111px;
-  height: 90px;
+  width: 113px;
+  height: 92px;
 
-  display: flex;
-  justify-content: center;
+  border: 2px solid #b9928b;
 
-  background: #f0d8d2;
-
-  border-radius: 48% 48% 45% 45%;
-
-  border: 2px solid #b9948e;
-}
-
-.eye {
-  position: absolute;
-
-  top: 36px;
-
-  width: 6px;
-  height: 6px;
-
-  background: #493c39;
+  background: #efd6d0;
 
   border-radius: 50%;
 }
 
-.left-eye {
+.bunny-eye {
+  position: absolute;
+
+  top: 37px;
+
+  width: 6px;
+  height: 6px;
+
+  background: #4a3c39;
+
+  border-radius: 50%;
+}
+
+.eye-left {
   left: 35px;
 }
 
-.right-eye {
+.eye-right {
   right: 35px;
 }
 
-.nose {
+.bunny-nose {
   position: absolute;
 
   top: 48px;
+  left: 50%;
+
+  transform: translateX(-50%);
 
   color: var(--rose);
-
-  font-size: 15px;
 }
 
-.wish-small {
-  font-size: 8px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-
-  color: #9b8980;
+.wish-label {
+  font-size: 7px;
+  letter-spacing: .25em;
+  color: #9a8980;
 }
 
-.wish-section h2 {
+.wish-page h2 {
   margin-top: 30px;
 
   font: 500 clamp(65px, 10vw, 125px)/.7 "Cormorant Garamond";
 
-  letter-spacing: -.06em;
+  letter-spacing: -.07em;
 }
 
-#wishSub {
+#wishText {
   margin-top: 20px;
 
   font: 22px "Cormorant Garamond";
 
-  color: #827269;
+  color: #7f7068;
 }
 
 .cake {
   position: relative;
 
   width: 180px;
-  height: 145px;
+  height: 135px;
 
-  margin: 20px 0 30px;
+  margin: 25px 0 30px;
 }
 
 .cake-body {
@@ -1101,19 +1076,20 @@ body.cursor-hover .cursor-trail {
   bottom: 0;
 
   width: 180px;
-  height: 75px;
+  height: 72px;
 
-  background: #e3b9af;
+  background: #dda9a0;
 
   border-radius: 8px 8px 25px 25px;
 
-  box-shadow: inset 0 -10px #d39d94;
+  box-shadow:
+    inset 0 -10px #ca8e87;
 }
 
-.cake-top {
+.cake-cream {
   position: absolute;
 
-  top: 42px;
+  top: 48px;
 
   width: 180px;
   height: 45px;
@@ -1122,17 +1098,17 @@ body.cursor-hover .cursor-trail {
 
   background: #fff0e8;
 
-  border: 2px solid #d5aaa0;
+  border: 2px solid #d4aaa0;
 
   z-index: 2;
 }
 
-.cake-candles {
+.candles {
   position: absolute;
 
-  top: 8px;
-  left: 35px;
-  right: 35px;
+  top: 10px;
+  left: 38px;
+  right: 38px;
 
   display: flex;
   justify-content: space-between;
@@ -1140,304 +1116,148 @@ body.cursor-hover .cursor-trail {
   z-index: 5;
 }
 
-.candle {
-  position: relative;
-
+.candles span {
   width: 7px;
-  height: 42px;
+  height: 45px;
 
   background:
     repeating-linear-gradient(
       -45deg,
-      #b76e67 0 5px,
-      #f1d7d0 5px 10px
+      #b86d67 0 5px,
+      #f3d8d1 5px 10px
     );
 }
 
-.candle span {
+.flames {
   position: absolute;
 
-  top: -16px;
-  left: -2px;
+  top: -7px;
+  left: 34px;
+  right: 34px;
 
-  width: 11px;
-  height: 16px;
+  display: flex;
+  justify-content: space-between;
 
-  border-radius: 50% 50% 50% 50%;
+  z-index: 8;
+}
 
-  background: #efae55;
+.flames i {
+  width: 14px;
+  height: 18px;
 
-  box-shadow:
-    0 0 12px #efae55aa;
+  background: #f0ae58;
+
+  border-radius: 50%;
+
+  box-shadow: 0 0 14px #f0ae58aa;
 
   animation: flame .25s infinite alternate;
 }
 
 @keyframes flame {
   to {
-    transform: scale(.72) translateY(2px);
-  }
-}
-
-.blow-button {
-  padding: 15px 23px;
-
-  border: 1px solid var(--ink);
-  border-radius: 100px;
-
-  background: transparent;
-
-  color: var(--ink);
-
-  font-size: 9px;
-  letter-spacing: .2em;
-
-  transition: .35s;
-}
-
-.blow-button:hover {
-  background: var(--ink);
-  color: white;
-}
-
-#countdown {
-  position: absolute;
-
-  z-index: 20;
-
-  font: 180px "Cormorant Garamond";
-
-  color: var(--rose);
-
-  opacity: 0;
-
-  transform: scale(.5);
-
-  pointer-events: none;
-}
-
-#countdown.show {
-  animation: countdownPop .7s forwards;
-}
-
-@keyframes countdownPop {
-  0% {
-    opacity: 0;
-    transform: scale(.4);
-  }
-
-  40% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(1);
+    transform: scale(.75) translateY(2px);
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    FINALE
-========================================================= */
+===================================================== */
 
-.finale {
+.finale-page {
   min-height: 100svh;
-
-  position: relative;
 
   display: grid;
   place-items: center;
 
-  overflow: hidden;
+  text-align: center;
 
   background:
     radial-gradient(
       circle at 50% 45%,
-      #392629,
-      #100c0d 65%
+      #3a272b,
+      #100c0d 70%
     );
 
-  color: #f5e9dd;
+  color: #f4e9df;
 }
 
-.finale-glow {
-  position: absolute;
-
-  width: 55vw;
-  height: 55vw;
-
-  border-radius: 50%;
-
-  background: #b76e6712;
-
-  filter: blur(80px);
-
-  animation: glow 5s ease-in-out infinite;
-}
-
-@keyframes glow {
-  50% {
-    transform: scale(1.3);
-    opacity: .5;
-  }
-}
-
-.finale-content {
+.finale-inner {
   position: relative;
   z-index: 5;
-
-  text-align: center;
 }
 
-.finale-small {
-  font-size: 9px;
+.finale-inner > span {
+  font-size: 8px;
   letter-spacing: .3em;
 
-  color: #b6a29d;
+  color: #a89590;
 }
 
-.finale h2 {
+.finale-inner h2 {
   margin-top: 45px;
 
-  font: 500 clamp(80px, 13vw, 180px)/.65 "Cormorant Garamond";
+  font: 500 clamp(75px, 13vw, 180px)/.65 "Cormorant Garamond";
 
   letter-spacing: -.07em;
 }
 
-.finale h2 span {
+.finale-inner h2 em {
   display: block;
 
-  font-family: "Parisienne";
+  font: 400 clamp(80px, 14vw, 190px)/.7 "Parisienne";
 
-  font-weight: 400;
-
-  color: #d58c83;
+  color: #d58b83;
 }
 
-.finale-content > p {
-  margin-top: 45px;
+.finale-inner p {
+  margin-top: 40px;
 
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: .2em;
 
-  color: #a79590;
+  color: #a89590;
 }
 
-.final-music {
-  margin-top: 35px;
+#finalMusicButton {
+  margin-top: 30px;
 
-  padding: 14px 22px;
+  padding: 13px 20px;
 
-  border: 1px solid #ffffff55;
+  border: 1px solid #ffffff44;
   border-radius: 100px;
 
   background: transparent;
 
   color: white;
 
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: .18em;
 
   transition: .35s;
 }
 
-.final-music:hover {
+#finalMusicButton:hover {
   background: white;
-  color: #171113;
+  color: #171012;
 }
 
-.finale-bottom {
+.final-bottom {
   position: absolute;
 
-  bottom: 28px;
+  bottom: 25px;
 
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: .2em;
 
-  color: #806f6f;
+  color: #796a68;
 }
 
 
-/* =========================================================
-   PARTICLES
-========================================================= */
-
-#particles {
-  position: fixed;
-  inset: 0;
-
-  z-index: 1;
-
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-
-  width: 2px;
-  height: 2px;
-
-  border-radius: 50%;
-
-  background: #b76e67;
-
-  opacity: .3;
-
-  animation: particleFloat linear infinite;
-}
-
-@keyframes particleFloat {
-  from {
-    transform: translateY(110vh);
-  }
-
-  to {
-    transform: translateY(-20vh);
-  }
-}
-
-
-/* =========================================================
-   PETALS
-========================================================= */
-
-#petals {
-  position: fixed;
-  inset: 0;
-
-  z-index: 900;
-
-  pointer-events: none;
-}
-
-.petal {
-  position: absolute;
-
-  top: -30px;
-
-  color: var(--rose);
-
-  opacity: .55;
-
-  animation: petalFall linear forwards;
-}
-
-@keyframes petalFall {
-  to {
-    transform:
-      translate(var(--x), 110vh)
-      rotate(500deg);
-
-    opacity: 0;
-  }
-}
-
-
-/* =========================================================
+/* =====================================================
    CONFETTI
-========================================================= */
+===================================================== */
 
 #confetti {
   position: absolute;
@@ -1449,21 +1269,20 @@ body.cursor-hover .cursor-trail {
 .confetti-piece {
   position: absolute;
 
-  top: 50%;
   left: 50%;
+  top: 50%;
 
   width: 7px;
   height: 15px;
 
   opacity: 0;
 
-  animation: confettiFly 2.2s cubic-bezier(.1,.7,.2,1) forwards;
+  animation: confetti 2.5s cubic-bezier(.1,.7,.2,1) forwards;
 }
 
-@keyframes confettiFly {
+@keyframes confetti {
   0% {
     opacity: 1;
-
     transform:
       translate(-50%, -50%)
       rotate(0);
@@ -1471,20 +1290,16 @@ body.cursor-hover .cursor-trail {
 
   100% {
     opacity: 0;
-
     transform:
-      translate(
-        var(--x),
-        var(--y)
-      )
+      translate(var(--x), var(--y))
       rotate(var(--r));
   }
 }
 
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media (max-width: 800px) {
 
@@ -1492,112 +1307,85 @@ body.cursor-hover .cursor-trail {
     cursor: auto;
   }
 
+  button {
+    cursor: pointer;
+  }
+
   .cursor,
-  .cursor-trail {
+  .cursor-ring {
     display: none;
   }
 
-  .music-control {
-    right: 15px;
-    top: 15px;
+  .diamond {
+    width: 85px;
+    height: 85px;
+
+    right: -15px;
+    bottom: 15vh;
   }
 
-  .hero {
-    min-height: 650px;
+  .diamond span {
+    font-size: 5px;
   }
 
-  .hero-meta {
+  .top-info,
+  .bottom-info {
     left: 20px;
     right: 20px;
   }
 
-  .hero-title {
-    font-size: clamp(75px, 22vw, 125px);
+  .intro-center h1,
+  .intro-center h1 em {
+    font-size: 23vw;
   }
 
-  .hero-subtitle {
+  .intro-center p {
     font-size: 18px;
   }
 
-  .hero-orbit {
-    width: 90vw;
-    height: 90vw;
+  .archive-page {
+    padding-top: 25vw;
   }
 
-  .intro-section {
-    display: block;
-    padding: 25vw 8vw;
-  }
-
-  .intro-left {
-    margin-bottom: 60px;
-  }
-
-  .intro-copy {
-    font-size: 20px;
-  }
-
-  .scroll-message {
-    margin-top: 70px;
-  }
-
-  .archive-header {
-    display: block;
+  .page-header {
     padding: 0 7vw;
   }
 
-  .archive-title {
-    margin-top: 45px;
-    font-size: 24vw;
+  .archive-heading {
+    padding: 0 7vw;
+    font-size: 23vw;
   }
 
-  .archive-header p {
-    margin-top: 30px;
+  .archive-heading strong {
+    font-size: 25vw;
   }
 
   .camera-track {
     padding-left: 7vw;
-    gap: 22px;
   }
 
-  .memory-card {
+  .photo-card {
     width: 220px;
   }
 
-  .memory-card img {
+  .photo-card img {
     height: 280px;
   }
 
-  .letter {
+  .letter-paper {
     padding: 50px 28px;
   }
 
-  .letter-top {
-    font-size: 7px;
-  }
-
-  .letter-body {
+  .letter-text {
     font-size: 19px;
   }
 
-  .letter-love {
-    font-size: 42px;
-  }
-
-  .letter-stamp {
+  .stamp {
     display: none;
   }
 
-  .wish-section h2 {
-    font-size: 20vw;
-  }
-
-  .finale h2 {
-    font-size: 21vw;
-  }
-
-  .finale-bottom {
-    bottom: 18px;
+  .finale-inner h2 {
+    font-size: 22vw;
   }
 
 }
